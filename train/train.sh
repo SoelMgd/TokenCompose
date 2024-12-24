@@ -26,7 +26,8 @@ LEARNING_RATE=5e-6
 
 # other settings
 GRADIENT_ACCUMMULATION_STEPS=4
-DATALOADER_NUM_WORKERS=6
+DATALOADER_NUM_WORKERS=1
+BATCH_SIZE=1
 
 OUTPUT_DIR="results/${RUN_NAME}"
 
@@ -36,7 +37,7 @@ mkdir -p $OUTPUT_DIR
 python src/train_token_compose.py \
   --pretrained_model_name_or_path=$MODEL_NAME \
   --train_data_dir=$TRAIN_DIR \
-  --train_batch_size=1 \
+  --train_batch_size=$BATCH_SIZE \
   --resolution $IMGAE_RESOLUTION \
   --dataloader_num_workers $DATALOADER_NUM_WORKERS \
   --gradient_accumulation_steps $GRADIENT_ACCUMMULATION_STEPS \
