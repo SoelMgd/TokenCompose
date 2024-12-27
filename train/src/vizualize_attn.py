@@ -21,7 +21,7 @@ class LimitedAttentionStore(AttentionStore):
             return attn
 
         key = f"{place_in_unet}_{'cross' if is_cross else 'self'}"
-        print(f"Capturing attention map for key: {key}, shape: {attn.shape}")
+        #print(f"Capturing attention map for key: {key}, shape: {attn.shape}")
         self.step_store[key].append(attn.clone())
         return attn
 
@@ -79,7 +79,7 @@ attn_maps = get_cross_attn_map_from_unet(limited_attention_store, is_training_sd
 print("Cartes d'attention extraites.")
 
 print("Clés disponibles dans attention_maps :", limited_attention_store.attention_store.keys())
-for key, maps in attention_store.attention_store.items():
+for key, maps in limited_attention_store.attention_store.items():
     print(f"Key: {key}")
     for i, map_ in enumerate(maps):
         print(f"  Map {i}: Shape {map_.shape}")
