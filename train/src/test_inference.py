@@ -1,4 +1,5 @@
 import torch
+import os
 from diffusers import StableDiffusionPipeline
 
 model_id = "mlpc-lab/TokenCompose_SD14_A"
