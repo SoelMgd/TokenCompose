@@ -19,10 +19,21 @@ class LimitedAttentionStore(AttentionStore):
         # Limiter à la résolution 32
         if attn.shape[-1] != 32 * 32:  # Vérifie la résolution
             return attn
-        
+
         key = f"{place_in_unet}_{'cross' if is_cross else 'self'}"
+        print(f"Capturing attention map for key: {key}, shape: {attn.shape}")
         self.step_store[key].append(attn.clone())
         return attn
+
+    def between_steps(self):
+        print(f"Resetting between steps at cur_step={self.cur_step}")
+        if len(self.attention_store) > 0:
+            print(f"Attention store non vide ({len(self.attention_store)} clés). Réinitialisation forcée.")
+            self.attention_store = {}
+
+        self.attention_store = self.step_store
+        self.step_store = self.get_empty_store()
+
     
 
 # Charger le modèle depuis HuggingFace
