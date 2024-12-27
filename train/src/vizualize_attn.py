@@ -9,6 +9,22 @@ import os
 output_dir = "./output"
 os.makedirs(output_dir, exist_ok=True)
 
+# Créer un contrôleur d'attention limité
+class LimitedAttentionStore(AttentionStore):
+    def forward(self, attn, is_cross: bool, place_in_unet: str):
+        # Limiter uniquement à la couche 'up'
+        if place_in_unet != "up":
+            return attn
+        
+        # Limiter à la résolution 32
+        if attn.shape[-1] != 32 * 32:  # Vérifie la résolution
+            return attn
+        
+        key = f"{place_in_unet}_{'cross' if is_cross else 'self'}"
+        self.step_store[key].append(attn.clone())
+        return attn
+    
+
 # Charger le modèle depuis HuggingFace
 model_id = "mlpc-lab/TokenCompose_SD14_B"
 device = "cuda"
@@ -20,11 +36,11 @@ print("Pipeline chargée avec succès.")
 
 # Initialiser AttentionStore pour capturer les cartes d'attention
 print("Initialisation d'AttentionStore...")
-attention_store = AttentionStore()
+limited_attention_store  = LimitedAttentionStore()
 
 # Remplacer le U-Net dans la pipeline pour enregistrer les cartes d'attention
 print("Enregistrement d'AttentionStore dans le modèle U-Net...")
-register_attention_control(pipe.unet, attention_store)
+register_attention_control(pipe.unet, limited_attention_store )
 print("AttentionStore enregistré avec succès.")
 
 # Récupérer le tokenizer depuis la pipeline
