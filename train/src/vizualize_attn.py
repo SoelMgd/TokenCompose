@@ -81,29 +81,35 @@ if attn_key not in limited_attention_store.attention_store:
 raw_attention_map = limited_attention_store.attention_store[attn_key][0]  # Première carte brute
 print(f"Dimensions de la carte brute : {raw_attention_map.shape}")
 
-# Identifier les indices des tokens
-token_indices_cat = tokenizer.encode("cat")[1:-1]
-token_indices_glass = tokenizer.encode("wine glass")[1:-1]
-print(f"Indices pour 'cat': {token_indices_cat}")
-print(f"Indices pour 'wine glass': {token_indices_glass}")
+# Moyenne sur les têtes d'attention
+attention_map_avg = raw_attention_map.mean(dim=0)  # torch.Size([256, 77])
+print(f"Dimensions après moyenne des têtes : {attention_map_avg.shape}")
 
-# Visualiser et sauvegarder les cartes d'attention
-print("Visualisation et sauvegarde des cartes d'attention...")
-for token_name, token_indices in [("cat", token_indices_cat), ("wine_glass", token_indices_glass)]:
+# Interpolation pour une meilleure résolution
+def upscale_attention_map(attention_map, target_resolution=512):
+    return F.interpolate(
+        attention_map.view(1, 1, 16, 16),  # Reshape vers (B, C, H, W)
+        size=(target_resolution, target_resolution),
+        mode="bilinear",
+        align_corners=False
+    ).squeeze(0).squeeze(0)  # Retour à (H, W)
+
+# Sauvegarder les cartes d'attention pour tous les tokens
+for token_idx in range(attention_map_avg.shape[-1]):  # Pour chaque token
     try:
-        print(f"Traitement des cartes d'attention pour '{token_name}'...")
-        attention_map_token = raw_attention_map[..., token_indices].mean(dim=-1)
-        reduced_attention_map = reduce_attention_map(attention_map_token)
+        # Extraire la carte d'attention pour le token
+        token_attention_map = attention_map_avg[:, token_idx]  # torch.Size([256])
+        token_attention_map = upscale_attention_map(token_attention_map)  # torch.Size([512, 512])
 
-        # Sauvegarder la carte d'attention
+        # Sauvegarder l'image
         plt.figure(figsize=(8, 8))
-        plt.imshow(reduced_attention_map, cmap="viridis")
-        plt.title(f"Cross-attention Map: {token_name}")
+        plt.imshow(token_attention_map.cpu().numpy(), cmap="viridis")
+        plt.title(f"Cross-attention Map: Token {token_idx}")
         plt.colorbar()
         plt.axis("off")
-        attention_map_path = os.path.join(output_dir, f"attention_map_{token_name}.png")
+        attention_map_path = os.path.join(output_dir, f"attention_map_token_{token_idx}.png")
         plt.savefig(attention_map_path)
         plt.close()
-        print(f"Carte d'attention pour '{token_name}' sauvegardée à : {attention_map_path}")
+        print(f"Carte d'attention pour le token {token_idx} sauvegardée à : {attention_map_path}")
     except Exception as e:
-        print(f"Erreur lors du traitement de '{token_name}': {e}")
+        print(f"Erreur lors du traitement du token {token_idx}: {e}")
