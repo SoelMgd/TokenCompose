@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import os
 
 # Charger le modèle depuis HuggingFace
-model_id = "mlpc-lab/TokenCompose_SD14_B"
+model_id = "mlpc-lab/TokenCompose_SD14_A"
 device = "cuda"
 
 # Initialiser AttentionStore pour capturer les cartes d'attention
