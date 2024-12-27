@@ -81,7 +81,9 @@ if __name__ == "__main__":
     model = model.to(device)
     model.eval()
 
-    json_name = f"{os.environ['RANK']}.json"
+    json_name = "results.json"
+
+    #json_name = f"{os.environ['RANK']}.json"
     output_json_name = os.path.join(args.output_json_path, json_name)
 
     index_list = list(range(len(text_data)))
