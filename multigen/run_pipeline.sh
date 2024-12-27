@@ -10,11 +10,11 @@ MASTER_PORT=$(expr $RANDOM + 1000)
 TEXT_FILE_PATH="coco_obj_comp_5_25.json"
 
 # model config
-MODEL_NAME="mlpc-lab/TokenCompose_SD14_"
+MODEL_NAME="mlpc-lab/TokenCompose_SD14_B"
 #"CompVis/stable-diffusion-v1-4"
 
 # output dir config
-OUTPUT_DIR_NAME="SD14"
+OUTPUT_DIR_NAME="SD14B"
 #"StableDiffusion1.4"
 SAMPLE_IMG_DIR="sample_imgs/${OUTPUT_DIR_NAME}"
 SAMPLE_JSON_DIR="sample_jsons/${OUTPUT_DIR_NAME}"
