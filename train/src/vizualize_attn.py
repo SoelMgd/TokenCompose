@@ -89,9 +89,13 @@ print(f"Indices pour 'wine glass': {token_indices_glass}")
 print("Visualisation et sauvegarde des cartes d'attention...")
 for token_name, token_indices in [("cat", token_indices_cat), ("wine_glass", token_indices_glass)]:
     try:
+        # Vérifiez si la clé 'up_32' existe
+        if "up_32" not in attn_maps:
+            raise KeyError("up_32 n'existe pas dans attn_maps")
+        
         # Moyenne des cartes d'attention pour toutes les têtes
         print(f"Traitement des cartes d'attention pour '{token_name}'...")
-        attention_map_token = attn_maps["down_64"][0][..., token_indices].mean(dim=-1).cpu().numpy()
+        attention_map_token = attn_maps["up_32"][0][..., token_indices].mean(dim=-1).cpu().numpy()
         print(f"Carte d'attention pour '{token_name}' extraite avec succès.")
 
         # Sauvegarder la carte d'attention
