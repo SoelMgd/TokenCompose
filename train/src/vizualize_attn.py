@@ -11,7 +11,8 @@ device = "cuda"
 attention_store = AttentionStore()
 
 # Charger la pipeline avec FP16
-pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16, revision="fp16")
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+
 pipe.to(device)
 
 # Enregistrer AttentionStore dans le U-Net
