@@ -62,6 +62,18 @@ tokenizer = pipe.tokenizer
 print("Tokenizer chargé :", type(tokenizer))
 
 prompt = "A cat and a wine glass"
+tokenized_prompt = tokenizer(prompt, return_tensors="pt", truncation=True, padding="max_length").input_ids[0]
+decoded_tokens = [tokenizer.decode([idx]) for idx in tokenized_prompt]
+
+print("Tokenized Prompt :", tokenized_prompt.tolist())
+print("Decoded Tokens :", decoded_tokens)
+
+# Identifier les indices pour 'cat' et 'wine glass'
+token_indices_cat = [i for i, token in enumerate(decoded_tokens) if "cat" in token]
+token_indices_glass = [i for i, token in enumerate(decoded_tokens) if "glass" in token or "wine" in token]
+
+print(f"Indices pour 'cat': {token_indices_cat}")
+print(f"Indices pour 'wine glass': {token_indices_glass}")
 
 # Générer une image
 image = pipe(prompt).images[0]
@@ -94,22 +106,32 @@ def upscale_attention_map(attention_map, target_resolution=512):
         align_corners=False
     ).squeeze(0).squeeze(0)  # Retour à (H, W)
 
-# Sauvegarder les cartes d'attention pour tous les tokens
-for token_idx in range(attention_map_avg.shape[-1]):  # Pour chaque token
-    try:
-        # Extraire la carte d'attention pour le token
-        token_attention_map = attention_map_avg[:, token_idx]  # torch.Size([256])
-        token_attention_map = upscale_attention_map(token_attention_map)  # torch.Size([512, 512])
+# Fonction pour combiner les cartes d'attention d'un ensemble d'indices
+def combine_attention_maps(attention_map_avg, token_indices):
+    combined_map = attention_map_avg[:, token_indices].mean(dim=-1)  # Moyenne sur les indices des tokens
+    return combined_map
 
-        # Sauvegarder l'image
+# Générer et sauvegarder les heatmaps pour 'cat' et 'wine glass'
+for token_name, token_indices in [("cat", token_indices_cat), ("wine_glass", token_indices_glass)]:
+    try:
+        print(f"Traitement des cartes d'attention pour '{token_name}'...")
+        
+        if len(token_indices) == 0:
+            raise ValueError(f"Aucun indice valide trouvé pour '{token_name}'.")
+
+        # Combiner les cartes d'attention
+        combined_attention_map = combine_attention_maps(attention_map_avg, token_indices)
+        combined_attention_map = upscale_attention_map(combined_attention_map)
+
+        # Sauvegarder la heatmap
         plt.figure(figsize=(8, 8))
-        plt.imshow(token_attention_map.cpu().numpy(), cmap="viridis")
-        plt.title(f"Cross-attention Map: Token {token_idx}")
+        plt.imshow(combined_attention_map.cpu().numpy(), cmap="viridis")
+        plt.title(f"Cross-attention Heatmap: {token_name}")
         plt.colorbar()
         plt.axis("off")
-        attention_map_path = os.path.join(output_dir, f"attention_map_token_{token_idx}.png")
+        attention_map_path = os.path.join(output_dir, f"heatmap_{token_name}.png")
         plt.savefig(attention_map_path)
         plt.close()
-        print(f"Carte d'attention pour le token {token_idx} sauvegardée à : {attention_map_path}")
+        print(f"Heatmap pour '{token_name}' sauvegardée à : {attention_map_path}")
     except Exception as e:
-        print(f"Erreur lors du traitement du token {token_idx}: {e}")
+        print(f"Erreur lors du traitement de '{token_name}': {e}")
