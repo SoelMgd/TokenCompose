@@ -1,0 +1,102 @@
+[
+    {
+        "unique_id": 0,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "minibike"
+        ],
+        "obj_2_attributes": [
+            "clock"
+        ],
+        "obj_3_attributes": [
+            "countertop"
+        ],
+        "obj_4_attributes": [
+            "pillow"
+        ],
+        "obj_5_attributes": [
+            "van"
+        ],
+        "text": "a photo of a minibike, a clock, a countertop, a pillow, and a van."
+    },
+    {
+        "unique_id": 1,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "toilet"
+        ],
+        "obj_2_attributes": [
+            "bench"
+        ],
+        "obj_3_attributes": [
+            "coffee table"
+        ],
+        "obj_4_attributes": [
+            "bicycle"
+        ],
+        "obj_5_attributes": [
+            "bag"
+        ],
+        "text": "a photo of a toilet, a bench, a coffee table, a bicycle, and a bag."
+    },
+    {
+        "unique_id": 2,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "clock"
+        ],
+        "obj_2_attributes": [
+            "car"
+        ],
+        "obj_3_attributes": [
+            "ball"
+        ],
+        "obj_4_attributes": [
+            "railing"
+        ],
+        "obj_5_attributes": [
+            "column"
+        ],
+        "text": "a photo of a clock, a car, a ball, a railing, and a column."
+    },
+    {
+        "unique_id": 3,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "van"
+        ],
+        "obj_2_attributes": [
+            "pool table"
+        ],
+        "obj_3_attributes": [
+            "flower"
+        ],
+        "obj_4_attributes": [
+            "bus"
+        ],
+        "obj_5_attributes": [
+            "wardrobe"
+        ],
+        "text": "a photo of a van, a pool table, a flower, a bus, and a wardrobe."
+    },
+    {
+        "unique_id": 4,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "clock"
+        ],
+        "obj_2_attributes": [
+            "bottle"
+        ],
+        "obj_3_attributes": [
+            "person"
+        ],
+        "obj_4_attributes": [
+            "palm"
+        ],
+        "obj_5_attributes": [
+            "bus"
+        ],
+        "text": "a photo of a clock, a bottle, a person, a palm, and a bus."
+    }
+]
