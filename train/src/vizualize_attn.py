@@ -75,7 +75,7 @@ print(f"Image sauvegardée à : {image_path}")
 
 # Récupérer les cartes d'attention
 print("Extraction des cartes de cross-attention...")
-attn_maps = get_cross_attn_map_from_unet(attention_store, is_training_sd21=False)
+attn_maps = get_cross_attn_map_from_unet(limited_attention_store, is_training_sd21=False)
 print("Cartes d'attention extraites.")
 
 # Identifier les indices des tokens
