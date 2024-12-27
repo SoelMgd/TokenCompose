@@ -26,9 +26,9 @@ class LimitedAttentionStore(AttentionStore):
         return attn
 
     def between_steps(self):
-        print(f"Resetting between steps at cur_step={self.cur_step}")
+        #print(f"Resetting between steps at cur_step={self.cur_step}")
         if len(self.attention_store) > 0:
-            print(f"Attention store non vide ({len(self.attention_store)} clés). Réinitialisation forcée.")
+            #print(f"Attention store non vide ({len(self.attention_store)} clés). Réinitialisation forcée.")
             self.attention_store = {}
 
         self.attention_store = self.step_store
@@ -77,6 +77,14 @@ print(f"Image sauvegardée à : {image_path}")
 print("Extraction des cartes de cross-attention...")
 attn_maps = get_cross_attn_map_from_unet(limited_attention_store, is_training_sd21=False)
 print("Cartes d'attention extraites.")
+
+print("Clés disponibles dans attention_maps :", limited_attention_store.attention_store.keys())
+for key, maps in attention_store.attention_store.items():
+    print(f"Key: {key}")
+    for i, map_ in enumerate(maps):
+        print(f"  Map {i}: Shape {map_.shape}")
+
+
 
 # Identifier les indices des tokens
 print("Encodage des tokens pour le prompt...")
