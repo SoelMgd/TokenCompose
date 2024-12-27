@@ -30,7 +30,7 @@ model_id = "mlpc-lab/TokenCompose_SD14_B"
 device = "cuda"
 
 print("Chargement de la pipeline Stable Diffusion...")
-pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
 pipe.to(device)
 print("Pipeline chargée avec succès.")
 
