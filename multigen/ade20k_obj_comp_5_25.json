@@ -1,0 +1,502 @@
+[
+    {
+        "unique_id": 0,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "minibike"
+        ],
+        "obj_2_attributes": [
+            "clock"
+        ],
+        "obj_3_attributes": [
+            "countertop"
+        ],
+        "obj_4_attributes": [
+            "pillow"
+        ],
+        "obj_5_attributes": [
+            "van"
+        ],
+        "text": "a photo of a minibike, a clock, a countertop, a pillow, and a van."
+    },
+    {
+        "unique_id": 1,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "toilet"
+        ],
+        "obj_2_attributes": [
+            "bench"
+        ],
+        "obj_3_attributes": [
+            "coffee table"
+        ],
+        "obj_4_attributes": [
+            "bicycle"
+        ],
+        "obj_5_attributes": [
+            "bag"
+        ],
+        "text": "a photo of a toilet, a bench, a coffee table, a bicycle, and a bag."
+    },
+    {
+        "unique_id": 2,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "clock"
+        ],
+        "obj_2_attributes": [
+            "car"
+        ],
+        "obj_3_attributes": [
+            "ball"
+        ],
+        "obj_4_attributes": [
+            "railing"
+        ],
+        "obj_5_attributes": [
+            "column"
+        ],
+        "text": "a photo of a clock, a car, a ball, a railing, and a column."
+    },
+    {
+        "unique_id": 3,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "van"
+        ],
+        "obj_2_attributes": [
+            "pool table"
+        ],
+        "obj_3_attributes": [
+            "flower"
+        ],
+        "obj_4_attributes": [
+            "bus"
+        ],
+        "obj_5_attributes": [
+            "wardrobe"
+        ],
+        "text": "a photo of a van, a pool table, a flower, a bus, and a wardrobe."
+    },
+    {
+        "unique_id": 4,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "clock"
+        ],
+        "obj_2_attributes": [
+            "bottle"
+        ],
+        "obj_3_attributes": [
+            "person"
+        ],
+        "obj_4_attributes": [
+            "palm"
+        ],
+        "obj_5_attributes": [
+            "bus"
+        ],
+        "text": "a photo of a clock, a bottle, a person, a palm, and a bus."
+    },
+    {
+        "unique_id": 5,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "sofa"
+        ],
+        "obj_2_attributes": [
+            "computer"
+        ],
+        "obj_3_attributes": [
+            "pillow"
+        ],
+        "obj_4_attributes": [
+            "pole"
+        ],
+        "obj_5_attributes": [
+            "bench"
+        ],
+        "text": "a photo of a sofa, a computer, a pillow, a pole, and a bench."
+    },
+    {
+        "unique_id": 6,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "kitchen island"
+        ],
+        "obj_2_attributes": [
+            "sofa"
+        ],
+        "obj_3_attributes": [
+            "monitor"
+        ],
+        "obj_4_attributes": [
+            "basket"
+        ],
+        "obj_5_attributes": [
+            "bench"
+        ],
+        "text": "a photo of a kitchen island, a sofa, a monitor, a basket, and a bench."
+    },
+    {
+        "unique_id": 7,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "booth"
+        ],
+        "obj_2_attributes": [
+            "bus"
+        ],
+        "obj_3_attributes": [
+            "pot"
+        ],
+        "obj_4_attributes": [
+            "ship"
+        ],
+        "obj_5_attributes": [
+            "sink"
+        ],
+        "text": "a photo of a booth, a bus, a pot, a ship, and a sink."
+    },
+    {
+        "unique_id": 8,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "bench"
+        ],
+        "obj_2_attributes": [
+            "shelf"
+        ],
+        "obj_3_attributes": [
+            "food"
+        ],
+        "obj_4_attributes": [
+            "flag"
+        ],
+        "obj_5_attributes": [
+            "bus"
+        ],
+        "text": "a photo of a bench, a shelf, a food, a flag, and a bus."
+    },
+    {
+        "unique_id": 9,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "kitchen island"
+        ],
+        "obj_2_attributes": [
+            "case"
+        ],
+        "obj_3_attributes": [
+            "ball"
+        ],
+        "obj_4_attributes": [
+            "chest of drawers"
+        ],
+        "obj_5_attributes": [
+            "ottoman"
+        ],
+        "text": "a photo of a kitchen island, a case, a ball, a chest of drawers, and a ottoman."
+    },
+    {
+        "unique_id": 10,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "radiator"
+        ],
+        "obj_2_attributes": [
+            "coffee table"
+        ],
+        "obj_3_attributes": [
+            "bookcase"
+        ],
+        "obj_4_attributes": [
+            "barrel"
+        ],
+        "obj_5_attributes": [
+            "towel"
+        ],
+        "text": "a photo of a radiator, a coffee table, a bookcase, a barrel, and a towel."
+    },
+    {
+        "unique_id": 11,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "step"
+        ],
+        "obj_2_attributes": [
+            "ship"
+        ],
+        "obj_3_attributes": [
+            "boat"
+        ],
+        "obj_4_attributes": [
+            "screen door"
+        ],
+        "obj_5_attributes": [
+            "bannister"
+        ],
+        "text": "a photo of a step, a ship, a boat, a screen door, and a bannister."
+    },
+    {
+        "unique_id": 12,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "clock"
+        ],
+        "obj_2_attributes": [
+            "swivel chair"
+        ],
+        "obj_3_attributes": [
+            "pool table"
+        ],
+        "obj_4_attributes": [
+            "trade name"
+        ],
+        "obj_5_attributes": [
+            "screen"
+        ],
+        "text": "a photo of a clock, a swivel chair, a pool table, a trade name, and a screen."
+    },
+    {
+        "unique_id": 13,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "car"
+        ],
+        "obj_2_attributes": [
+            "seat"
+        ],
+        "obj_3_attributes": [
+            "microwave"
+        ],
+        "obj_4_attributes": [
+            "painting"
+        ],
+        "obj_5_attributes": [
+            "shelf"
+        ],
+        "text": "a photo of a car, a seat, a microwave, a painting, and a shelf."
+    },
+    {
+        "unique_id": 14,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "desk"
+        ],
+        "obj_2_attributes": [
+            "case"
+        ],
+        "obj_3_attributes": [
+            "sconce"
+        ],
+        "obj_4_attributes": [
+            "awning"
+        ],
+        "obj_5_attributes": [
+            "bed"
+        ],
+        "text": "a photo of a desk, a case, a sconce, a awning, and a bed."
+    },
+    {
+        "unique_id": 15,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "flag"
+        ],
+        "obj_2_attributes": [
+            "chandelier"
+        ],
+        "obj_3_attributes": [
+            "door"
+        ],
+        "obj_4_attributes": [
+            "cabinet"
+        ],
+        "obj_5_attributes": [
+            "bathtub"
+        ],
+        "text": "a photo of a flag, a chandelier, a door, a cabinet, and a bathtub."
+    },
+    {
+        "unique_id": 16,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "van"
+        ],
+        "obj_2_attributes": [
+            "book"
+        ],
+        "obj_3_attributes": [
+            "oven"
+        ],
+        "obj_4_attributes": [
+            "tray"
+        ],
+        "obj_5_attributes": [
+            "bulletin board"
+        ],
+        "text": "a photo of a van, a book, a oven, a tray, and a bulletin board."
+    },
+    {
+        "unique_id": 17,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "towel"
+        ],
+        "obj_2_attributes": [
+            "painting"
+        ],
+        "obj_3_attributes": [
+            "stove"
+        ],
+        "obj_4_attributes": [
+            "bulletin board"
+        ],
+        "obj_5_attributes": [
+            "truck"
+        ],
+        "text": "a photo of a towel, a painting, a stove, a bulletin board, and a truck."
+    },
+    {
+        "unique_id": 18,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "countertop"
+        ],
+        "obj_2_attributes": [
+            "signboard"
+        ],
+        "obj_3_attributes": [
+            "arcade machine"
+        ],
+        "obj_4_attributes": [
+            "stove"
+        ],
+        "obj_5_attributes": [
+            "animal"
+        ],
+        "text": "a photo of a countertop, a signboard, a arcade machine, a stove, and a animal."
+    },
+    {
+        "unique_id": 19,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "car"
+        ],
+        "obj_2_attributes": [
+            "person"
+        ],
+        "obj_3_attributes": [
+            "tray"
+        ],
+        "obj_4_attributes": [
+            "painting"
+        ],
+        "obj_5_attributes": [
+            "table"
+        ],
+        "text": "a photo of a car, a person, a tray, a painting, and a table."
+    },
+    {
+        "unique_id": 20,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "toilet"
+        ],
+        "obj_2_attributes": [
+            "swivel chair"
+        ],
+        "obj_3_attributes": [
+            "screen door"
+        ],
+        "obj_4_attributes": [
+            "sink"
+        ],
+        "obj_5_attributes": [
+            "car"
+        ],
+        "text": "a photo of a toilet, a swivel chair, a screen door, a sink, and a car."
+    },
+    {
+        "unique_id": 21,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "television receiver"
+        ],
+        "obj_2_attributes": [
+            "fountain"
+        ],
+        "obj_3_attributes": [
+            "door"
+        ],
+        "obj_4_attributes": [
+            "swivel chair"
+        ],
+        "obj_5_attributes": [
+            "bicycle"
+        ],
+        "text": "a photo of a television receiver, a fountain, a door, a swivel chair, and a bicycle."
+    },
+    {
+        "unique_id": 22,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "curtain"
+        ],
+        "obj_2_attributes": [
+            "column"
+        ],
+        "obj_3_attributes": [
+            "shelf"
+        ],
+        "obj_4_attributes": [
+            "sofa"
+        ],
+        "obj_5_attributes": [
+            "plaything"
+        ],
+        "text": "a photo of a curtain, a column, a shelf, a sofa, and a plaything."
+    },
+    {
+        "unique_id": 23,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "ottoman"
+        ],
+        "obj_2_attributes": [
+            "ashcan"
+        ],
+        "obj_3_attributes": [
+            "door"
+        ],
+        "obj_4_attributes": [
+            "vase"
+        ],
+        "obj_5_attributes": [
+            "glass"
+        ],
+        "text": "a photo of a ottoman, a ashcan, a door, a vase, and a glass."
+    },
+    {
+        "unique_id": 24,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "light"
+        ],
+        "obj_2_attributes": [
+            "book"
+        ],
+        "obj_3_attributes": [
+            "awning"
+        ],
+        "obj_4_attributes": [
+            "mirror"
+        ],
+        "obj_5_attributes": [
+            "desk"
+        ],
+        "text": "a photo of a light, a book, a awning, a mirror, and a desk."
+    }
+]
