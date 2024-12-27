@@ -1,48 +1,61 @@
 import torch
 from diffusers import StableDiffusionPipeline
 from attn_utils import AttentionStore, register_attention_control, get_cross_attn_map_from_unet
-import os
+from transformers import CLIPTokenizer
 import matplotlib.pyplot as plt
+import os
 
+# Charger le modèle depuis HuggingFace
 model_id = "mlpc-lab/TokenCompose_SD14_B"
 device = "cuda"
 
-# Initialiser AttentionStore
+# Initialiser AttentionStore pour capturer les cartes d'attention
 attention_store = AttentionStore()
 
-# Charger la pipeline avec FP16
+print("chargement de la pipeline")
+# Charger la pipeline avec précision mixte pour réduire la charge mémoire
 pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
-
 pipe.to(device)
 
-print("je suis apres pipe")
-# Enregistrer AttentionStore dans le U-Net
-register_attention_control(pipe.unet, attention_store)
+print("pipeline chargee")
 
+# Remplacer le U-Net dans la pipeline pour enregistrer les cartes d'attention
+register_attention_control(pipe.unet, attention_store)
+print("Unet remplacé")
+
+# Récupérer le tokenizer depuis la pipeline
+tokenizer = pipe.tokenizer
+
+# Prompt
 prompt = "A cat and a wine glass"
 
-# Générer l'image avec torch.no_grad()
+# Désactiver les gradients pour économiser de la mémoire
 with torch.no_grad():
+    # Générer une image
+    print("génération de l'image")
     image = pipe(prompt).images[0]
 
-print("je suis après generation")
+    print("sauvegarde")
+    # Sauvegarder l'image générée
+    output_dir = "./output"
+    os.makedirs(output_dir, exist_ok=True)
+    image.save(os.path.join(output_dir, "generated_image.png"))
 
-# Libérer la mémoire GPU utilisée par l'image
-#del image
-#torch.cuda.empty_cache()
+    # Extraire les cartes de cross-attention uniquement pour la couche "down_64"
+    printt("extraction attention maps")
+    attn_maps = get_cross_attn_map_from_unet(attention_store, is_training_sd21=False)
 
-# Récupérer les cartes d'attention (résolutions réduites)
-attn_maps = get_cross_attn_map_from_unet(attention_store, is_training_sd21=False, reses=[16, 8])
-print("je suis apres attn map")
+    # Identifier l'index d'un seul token (par exemple, "cat")
+    token_indices_cat = tokenizer.encode("cat")[1:-1]  # Indices pour "cat"
 
-# Sauvegarder la carte d'attention
-output_dir = "./output"
-os.makedirs(output_dir, exist_ok=True)
-attention_map = attn_maps["down_16"][0].mean(dim=-1).cpu().numpy()
+    # Moyenne des cartes d'attention pour toutes les têtes à "down_64" pour le token "cat"
+    attention_map_token = attn_maps["down_64"][0][..., token_indices_cat].mean(dim=-1).cpu().numpy()
 
-plt.figure(figsize=(8, 8))
-plt.imshow(attention_map, cmap="viridis")
-plt.title("Cross-attention Map")
-plt.colorbar()
-plt.savefig(os.path.join(output_dir, "attention_map.png"))
-plt.close()
+    # Sauvegarder la carte d'attention
+    plt.figure(figsize=(8, 8))
+    plt.imshow(attention_map_token, cmap="viridis")
+    plt.title(f"Cross-attention Map: cat")
+    plt.colorbar()
+    plt.axis("off")
+    plt.savefig(os.path.join(output_dir, f"attention_map_cat.png"))
+    plt.close()
