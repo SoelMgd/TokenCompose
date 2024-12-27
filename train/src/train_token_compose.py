@@ -49,14 +49,24 @@ def main(args):
 
     accelerator_project_config = ProjectConfiguration(project_dir=args.output_dir, logging_dir=logging_dir)
 
-    mixed_precision = None
+    mixed_precision = "fp16" #None
+
+    print(f"PyTorch CUDA available: {torch.cuda.is_available()}")
+    print(f"CUDA device: {torch.cuda.get_device_name(0)}")
 
     accelerator = Accelerator(
         gradient_accumulation_steps=args.gradient_accumulation_steps,
         mixed_precision=mixed_precision,
         log_with=args.report_to,
         project_config=accelerator_project_config,
+        device_placement=True,
+        cpu=False
     )
+
+    print(f"Device used by Accelerator: {accelerator.device}")
+    print(f"Using device: {accelerator.device}")
+    print(f"Memory allocated: {torch.cuda.memory_allocated() / 1024**2} MB")
+    print(f"Memory reserved: {torch.cuda.memory_reserved() / 1024**2} MB")
 
     # Make one log on every process with the configuration for debugging.
     logging.basicConfig(

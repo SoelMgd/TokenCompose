@@ -2,18 +2,18 @@
 set -e
 
 # accelerate config
-export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
-NUM_GPUS=8
+export CUDA_VISIBLE_DEVICES=0
+NUM_GPUS=1
 MASTER_PORT=$(expr $RANDOM + 1000)
 
 # text config
-TEXT_FILE_PATH="coco_obj_comp_5_1k.json" #"ade20k_obj_comp_5_1k.json"
+TEXT_FILE_PATH="ade20k_obj_comp_5_1k.json"
 
 # model config
-MODEL_NAME="mlpc-lab/TokenCompose_SD14_A" #"CompVis/stable-diffusion-v1-4"
+MODEL_NAME="CompVis/stable-diffusion-v1-4"
 
 # output dir config
-OUTPUT_DIR_NAME="TC_SD14_A" #"StableDiffusion1.4"
+OUTPUT_DIR_NAME="StableDiffusion1.4"
 SAMPLE_IMG_DIR="sample_imgs/${OUTPUT_DIR_NAME}"
 SAMPLE_JSON_DIR="sample_jsons/${OUTPUT_DIR_NAME}"
 mkdir -p $SAMPLE_IMG_DIR
