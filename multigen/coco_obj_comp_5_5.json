@@ -1,0 +1,102 @@
+[
+    {
+        "unique_id": 0,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "book"
+        ],
+        "obj_2_attributes": [
+            "cup"
+        ],
+        "obj_3_attributes": [
+            "kite"
+        ],
+        "obj_4_attributes": [
+            "mouse"
+        ],
+        "obj_5_attributes": [
+            "surfboard"
+        ],
+        "text": "a photo of a book, a cup, a kite, a mouse, and a surfboard."
+    },
+    {
+        "unique_id": 1,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "wine glass"
+        ],
+        "obj_2_attributes": [
+            "skateboard"
+        ],
+        "obj_3_attributes": [
+            "refrigerator"
+        ],
+        "obj_4_attributes": [
+            "boat"
+        ],
+        "obj_5_attributes": [
+            "vase"
+        ],
+        "text": "a photo of a wine glass, a skateboard, a refrigerator, a boat, and a vase."
+    },
+    {
+        "unique_id": 2,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "elephant"
+        ],
+        "obj_2_attributes": [
+            "giraffe"
+        ],
+        "obj_3_attributes": [
+            "mouse"
+        ],
+        "obj_4_attributes": [
+            "sports ball"
+        ],
+        "obj_5_attributes": [
+            "tennis racket"
+        ],
+        "text": "a photo of a elephant, a giraffe, a mouse, a sports ball, and a tennis racket."
+    },
+    {
+        "unique_id": 3,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "orange"
+        ],
+        "obj_2_attributes": [
+            "horse"
+        ],
+        "obj_3_attributes": [
+            "laptop"
+        ],
+        "obj_4_attributes": [
+            "motorcycle"
+        ],
+        "obj_5_attributes": [
+            "knife"
+        ],
+        "text": "a photo of a orange, a horse, a laptop, a motorcycle, and a knife."
+    },
+    {
+        "unique_id": 4,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "orange"
+        ],
+        "obj_2_attributes": [
+            "fire hydrant"
+        ],
+        "obj_3_attributes": [
+            "bowl"
+        ],
+        "obj_4_attributes": [
+            "kite"
+        ],
+        "obj_5_attributes": [
+            "dining table"
+        ],
+        "text": "a photo of a orange, a fire hydrant, a bowl, a kite, and a dining table."
+    }
+]
