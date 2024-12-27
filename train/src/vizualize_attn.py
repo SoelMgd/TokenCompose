@@ -15,6 +15,7 @@ pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float
 
 pipe.to(device)
 
+print("je suis apres pipe")
 # Enregistrer AttentionStore dans le U-Net
 register_attention_control(pipe.unet, attention_store)
 
@@ -24,12 +25,15 @@ prompt = "A cat and a wine glass"
 with torch.no_grad():
     image = pipe(prompt).images[0]
 
+print("je suis après generation")
+
 # Libérer la mémoire GPU utilisée par l'image
 #del image
 #torch.cuda.empty_cache()
 
 # Récupérer les cartes d'attention (résolutions réduites)
 attn_maps = get_cross_attn_map_from_unet(attention_store, is_training_sd21=False, reses=[16, 8])
+print("je suis apres attn map")
 
 # Sauvegarder la carte d'attention
 output_dir = "./output"
