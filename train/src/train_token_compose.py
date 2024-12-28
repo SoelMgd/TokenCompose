@@ -320,166 +320,147 @@ def main(args):
     progress_bar = tqdm(range(global_step, args.max_train_steps), disable=not accelerator.is_local_main_process)
     progress_bar.set_description("Steps")
 
+    print("Before modifications")
+    print(f"Memory allocated: {torch.cuda.memory_allocated() / 1024**2} MB")
+    print(f"Memory reserved: {torch.cuda.memory_reserved() / 1024**2} MB")
+
     for epoch in range(first_epoch, args.num_train_epochs):
         unet.train()
         train_loss = 0.0
         for step, batch in enumerate(train_dataloader):
 
-            # we reset controller twice because we use grad_checkpointing, which will have additional forward during the backward process
             controller.reset()
 
-            # For Resume from checkpoint, Skip steps until we reach the resumed step
+            print(f"\n[Epoch {epoch+1}, Step {step+1}] Beginning of batch")
+            print(f"Memory allocated: {torch.cuda.memory_allocated() / 1024**2:.2f} MB")
+            print(f"Memory reserved: {torch.cuda.memory_reserved() / 1024**2:.2f} MB")
+
             if args.resume_from_checkpoint and epoch == first_epoch and step < resume_step:
                 if step % 10 == 0:
-                    logger.info(f"skipping data {step} / {resume_step}")
+                    logger.info(f"Skipping data {step} / {resume_step}")
                 continue
 
             with accelerator.accumulate(unet):
-                # Convert images to latent space
-                latents = vae.encode(batch["pixel_values"].to(weight_dtype)).latent_dist.sample()
-                latents = latents * vae.config.scaling_factor
+                try:
+                    latents = vae.encode(batch["pixel_values"].to(weight_dtype)).latent_dist.sample()
+                    latents = latents * vae.config.scaling_factor
 
-                # Sample noise that we'll add to the latents
-                noise = torch.randn_like(latents)
-                
-                bsz = latents.shape[0]
-                # Sample a random timestep for each image
-                max_timestep = noise_scheduler.config.num_train_timesteps
-                timesteps = torch.randint(0, max_timestep, (bsz,), device=latents.device)
-                timesteps = timesteps.long()
-                # add noise to latents
-                noisy_latents = noise_scheduler.add_noise(latents, noise, timesteps)
-                
-                # input ids: torch.Size([1, 77])
-                input_ids = batch["input_ids"]
+                    noise = torch.randn_like(latents)
 
-                # Get the text embedding for conditioning
-                encoder_hidden_states = text_encoder(input_ids)[0]
+                    bsz = latents.shape[0]
+                    max_timestep = noise_scheduler.config.num_train_timesteps
+                    timesteps = torch.randint(0, max_timestep, (bsz,), device=latents.device).long()
+                    noisy_latents = noise_scheduler.add_noise(latents, noise, timesteps)
 
-                if noise_scheduler.config.prediction_type == "epsilon":
-                    target = noise
-                elif noise_scheduler.config.prediction_type == "v_prediction":
-                    target = noise_scheduler.get_velocity(latents, noise, timesteps)
-                else:
-                    raise ValueError(f"Unknown prediction type {noise_scheduler.config.prediction_type}")
+                    input_ids = batch["input_ids"]
+                    encoder_hidden_states = text_encoder(input_ids)[0]
 
-                # Predict the noise residual and compute loss
-                model_pred = unet(noisy_latents, timesteps, encoder_hidden_states).sample
+                    if noise_scheduler.config.prediction_type == "epsilon":
+                        target = noise
+                    elif noise_scheduler.config.prediction_type == "v_prediction":
+                        target = noise_scheduler.get_velocity(latents, noise, timesteps)
+                    else:
+                        raise ValueError(f"Unknown prediction type {noise_scheduler.config.prediction_type}")
 
-                prompts = batch["text"]
-                assert len(prompts) == 1, "only support batch size 1"
+                    print(f"[Step {step+1}] After encoding, adding noise, and setting targets")
+                    print(f"Memory allocated: {torch.cuda.memory_allocated() / 1024**2:.2f} MB")
+                    print(f"Memory reserved: {torch.cuda.memory_reserved() / 1024**2:.2f} MB")
 
-                postprocess_seg_ls = batch["postprocess_seg_ls"]
+                    model_pred = unet(noisy_latents, timesteps, encoder_hidden_states).sample
 
-                word_token_idx_ls = [] # postion of token in text
-                gt_seg_ls = []
-                for item in postprocess_seg_ls:
-                    # item: [[[words], attn_gt], [[words], attn_gt], ...]
-                    # words = "teddy bear" or "surfboard" or, ....
-                    words_indices = []
+                    prompts = batch["text"]
+                    assert len(prompts) == 1, "Only batch size 1 supported."
 
-                    words = item[0][0]
-                    words = words.lower()
+                    postprocess_seg_ls = batch["postprocess_seg_ls"]
 
-                    words_indices = get_word_idx(prompts[0], words, tokenizer)
+                    word_token_idx_ls = []
+                    gt_seg_ls = []
+                    for item in postprocess_seg_ls:
+                        words = item[0][0].lower()
+                        words_indices = get_word_idx(prompts[0], words, tokenizer)
+                        word_token_idx_ls.append(words_indices)
+                        gt_seg_ls.append(item[1])
 
-                    word_token_idx_ls.append(words_indices)
-
-                    seg_gt = item[1] # seg_gt: torch.Size([1, 1, 512, 512])
-                    gt_seg_ls.append(seg_gt)
-
-                # calculate loss
-                attn_dict = get_cross_attn_map_from_unet(
-                    attention_store=controller, 
-                    is_training_sd21=is_training_sd21
-                )
-
-                token_loss = 0.0
-                pixel_loss = 0.0
-
-                grounding_loss_dict = {}
-
-                print("before attn_loss_dict")
-                print(f"Device used by Accelerator: {accelerator.device}")
-                print(f"Using device: {accelerator.device}")
-                print(f"Memory allocated: {torch.cuda.memory_allocated() / 1024**2} MB")
-                print(f"Memory reserved: {torch.cuda.memory_reserved() / 1024**2} MB")
-                
-                '''
-                # mid_8, up_16, up_32, up_64 for sd14
-                for train_layer in train_layers_ls:
-                    layer_res = int(train_layer.split("_")[1])
-                    print(train_layer, layer_res)
-
-                    attn_loss_dict = \
-                        get_grounding_loss_by_layer(
-                        _gt_seg_list=gt_seg_ls,
-                        word_token_idx_ls=word_token_idx_ls,
-                        res=layer_res,
-                        input_attn_map_ls=attn_dict[train_layer],
-                        is_training_sd21=is_training_sd21,
+                    attn_dict = get_cross_attn_map_from_unet(
+                        attention_store=controller, 
+                        is_training_sd21=is_training_sd21
                     )
 
-                    layer_token_loss = attn_loss_dict["token_loss"]
-                    layer_pixel_loss = attn_loss_dict["pixel_loss"]
+                    print(f"[Step {step+1}] Before calculating grounding loss")
+                    print(f"Memory allocated: {torch.cuda.memory_allocated() / 1024**2:.2f} MB")
+                    print(f"Memory reserved: {torch.cuda.memory_reserved() / 1024**2:.2f} MB")
 
-                    grounding_loss_dict[f"token/{train_layer}"] = layer_token_loss
-                    grounding_loss_dict[f"pixel/{train_layer}"] = layer_pixel_loss
+                    token_loss = 0.0
+                    pixel_loss = 0.0
+                    grounding_loss_dict = {}
 
-                    token_loss += layer_token_loss
-                    pixel_loss += layer_pixel_loss
+                    for train_layer in train_layers_ls:
+                        layer_res = int(train_layer.split("_")[1])
+                        print(f"Calculating loss for {train_layer} with resolution {layer_res}")
 
-                grounding_loss = token_loss_scale * token_loss + pixel_loss_scale * pixel_loss'''
+                        attn_loss_dict = get_grounding_loss_by_layer(
+                            _gt_seg_list=gt_seg_ls,
+                            word_token_idx_ls=word_token_idx_ls,
+                            res=layer_res,
+                            input_attn_map_ls=attn_dict[train_layer],
+                            is_training_sd21=is_training_sd21,
+                        )
 
-                denoise_loss = F.mse_loss(model_pred.float(), target.float(), reduction="mean")
+                        grounding_loss_dict[f"token/{train_layer}"] = attn_loss_dict["token_loss"]
+                        grounding_loss_dict[f"pixel/{train_layer}"] = attn_loss_dict["pixel_loss"]
 
-                # get learing rate
-                lr = lr_scheduler.get_last_lr()[0]
+                        token_loss += attn_loss_dict["token_loss"]
+                        pixel_loss += attn_loss_dict["pixel_loss"]
 
-                step_cnt += 1
+                    grounding_loss = token_loss_scale * token_loss + pixel_loss_scale * pixel_loss
+                    denoise_loss = F.mse_loss(model_pred.float(), target.float(), reduction="mean")
 
-                loss_dict = {
-                    "step/step_cnt" : step_cnt,
-                    "lr/learning_rate" : lr,
-                    "train/token_loss_w_scale": 0, # token_loss_scale * token_loss
-                    "train/pixel_loss_w_scale": 0, # pixel_loss_scale * pixel_loss
-                    "train/denoise_loss": denoise_loss,
-                    "train/total_loss": denoise_loss, # + grounding_loss,
-                }
+                    lr = lr_scheduler.get_last_lr()[0]
+                    step_cnt += 1
 
-                # add grounding loss
-                loss_dict.update(grounding_loss_dict)
+                    loss_dict = {
+                        "step/step_cnt": step_cnt,
+                        "lr/learning_rate": lr,
+                        "train/token_loss_w_scale": token_loss_scale * token_loss,
+                        "train/pixel_loss_w_scale": pixel_loss_scale * pixel_loss,
+                        "train/denoise_loss": denoise_loss,
+                        "train/total_loss": denoise_loss + grounding_loss,
+                    }
 
-                if args.report_to == "wandb":
-                    for name, value in loss_dict.items():
-                        wandb.log({name : value}, step=step_cnt)
+                    loss_dict.update(grounding_loss_dict)
 
-                loss = denoise_loss #+ grounding_loss
+                    if args.report_to == "wandb":
+                        for name, value in loss_dict.items():
+                            wandb.log({name: value}, step=step_cnt)
 
-                # we reset controller twice because we use grad_checkpointing, which will have additional forward during the backward process
-                controller.reset()
+                    loss = denoise_loss + grounding_loss
 
-                # Gather the losses across all processes for logging (if we use distributed training).
-                avg_loss = accelerator.gather(loss.repeat(args.train_batch_size)).mean()
-                                
-                train_loss += avg_loss.item() / args.gradient_accumulation_steps
+                    controller.reset()
 
-                print("BACKPROPAGATION")
-                print("loss totale :", loss, "denoise_loss :", denoise_loss)
-                print(f"Memory before backward: {torch.cuda.memory_allocated() / 1024**2:.2f} MB")
+                    avg_loss = accelerator.gather(loss.repeat(args.train_batch_size)).mean()
+                    train_loss += avg_loss.item() / args.gradient_accumulation_steps
 
+                    print(f"[Step {step+1}] Before backward pass")
+                    print(f"Loss: {loss.item():.4f}")
+                    print(f"Memory allocated: {torch.cuda.memory_allocated() / 1024**2:.2f} MB")
+                    print(f"Memory reserved: {torch.cuda.memory_reserved() / 1024**2:.2f} MB")
 
-                # Backpropagate
-                accelerator.backward(loss)
-                if accelerator.sync_gradients:
-                    accelerator.clip_grad_norm_(unet.parameters(), args.max_grad_norm)
-                optimizer.step()
-                lr_scheduler.step()
-                optimizer.zero_grad()
-                print(f"Memory after backward: {torch.cuda.memory_allocated() / 1024**2:.2f} MB")
+                    accelerator.backward(loss)
 
+                    if accelerator.sync_gradients:
+                        accelerator.clip_grad_norm_(unet.parameters(), args.max_grad_norm)
+                        optimizer.step()
+                        lr_scheduler.step()
+                        optimizer.zero_grad()
 
-            # Checks if the accelerator has performed an optimization step behind the scenes
+                    print(f"[Step {step+1}] After backward pass")
+                    print(f"Memory allocated: {torch.cuda.memory_allocated() / 1024**2:.2f} MB")
+                    print(f"Memory reserved: {torch.cuda.memory_reserved() / 1024**2:.2f} MB")
+
+                except Exception as e:
+                    print(f"Error at step {step+1}: {e}")
+                    raise
+
             if accelerator.sync_gradients:
                 if args.use_ema:
                     ema_unet.step(unet.parameters())
@@ -489,29 +470,8 @@ def main(args):
                 accelerator.log({"train_loss": train_loss}, step=global_step)
                 train_loss = 0.0
 
-                # save checkpoint 
                 if global_step % args.checkpointing_steps == 0:
                     if accelerator.is_main_process:
-                        # _before_ saving state, check if this save would set us over the `checkpoints_total_limit`
-                        if args.checkpoints_total_limit is not None:
-                            checkpoints = os.listdir(args.output_dir)
-                            checkpoints = [d for d in checkpoints if d.startswith("checkpoint")]
-                            checkpoints = sorted(checkpoints, key=lambda x: int(x.split("-")[1]))
-
-                            # before we save the new checkpoint, we need to have at _most_ `checkpoints_total_limit - 1` checkpoints
-                            if len(checkpoints) >= args.checkpoints_total_limit:
-                                num_to_remove = len(checkpoints) - args.checkpoints_total_limit + 1
-                                removing_checkpoints = checkpoints[0:num_to_remove]
-
-                                logger.info(
-                                    f"{len(checkpoints)} checkpoints already exist, removing {len(removing_checkpoints)} checkpoints"
-                                )
-                                logger.info(f"removing checkpoints: {', '.join(removing_checkpoints)}")
-
-                                for removing_checkpoint in removing_checkpoints:
-                                    removing_checkpoint = os.path.join(args.output_dir, removing_checkpoint)
-                                    shutil.rmtree(removing_checkpoint)
-
                         save_path = os.path.join(args.output_dir, f"checkpoint-{global_step}")
                         accelerator.save_state(save_path)
                         logger.info(f"Saved state to {save_path}")
@@ -522,10 +482,9 @@ def main(args):
             if global_step >= args.max_train_steps:
                 break
 
-    # Create the pipeline using the trained modules and save it.
     accelerator.wait_for_everyone()
-
     accelerator.end_training()
+
 
 if __name__ == "__main__":
 
