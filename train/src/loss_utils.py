@@ -99,9 +99,7 @@ def get_grounding_loss_by_layer(_gt_seg_list, word_token_idx_ls, res,
     token_loss = token_loss / len(word_token_idx_ls)
     ################## token loss end ##########################
 
-
-
-        ################## pixel loss start ######################
+    ################## pixel loss start ######################
     # average cross attention map on different layers
     avg_attn_map_ls = []
     for i in range(len(input_attn_map_ls)):
@@ -122,15 +120,10 @@ def get_grounding_loss_by_layer(_gt_seg_list, word_token_idx_ls, res,
                 avg_attn_map[..., token_idx]
             )
         word_cross_attn_ls = torch.stack(word_cross_attn_ls, dim=0).sum(dim=0)
-
-        # Ensure consistent dtype between word_cross_attn_ls and gt_seg_list[i]
-        word_cross_attn_ls = word_cross_attn_ls.to(gt_seg_list[i].dtype)
         pixel_loss += bce_loss_func(word_cross_attn_ls, gt_seg_list[i])
 
-    # Average with len(word_token_idx_ls)
+    # average with len word_token_idx_ls
     pixel_loss = pixel_loss / len(word_token_idx_ls)
-    ################## pixel loss end #########################
-
     ################## pixel loss end #########################
 
     return {
