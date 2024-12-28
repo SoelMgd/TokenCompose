@@ -51,9 +51,10 @@ python src/train_token_compose.py \
   --checkpointing_steps $CHECKPOINT_STEP \
   --token_loss_scale $TOKEN_LOSS_SCALE \
   --pixel_loss_scale $PIXEL_LOSS_SCALE \
-  --train_mid 8 \
   --train_up 16 \
   --report_to="wandb" \
   --tracker_run_name $RUN_NAME \
   --tracker_project_name $PROJ_NAME \
+
+  #--train_mid 8 \
 
