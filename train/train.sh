@@ -1,6 +1,6 @@
 set -e
 
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=0,1
 
 export MODEL_NAME="CompVis/stable-diffusion-v1-4"
 IMGAE_RESOLUTION=512
