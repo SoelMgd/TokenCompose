@@ -465,7 +465,7 @@ def main(args):
                 train_loss += avg_loss.item() / args.gradient_accumulation_steps
 
                 print("BACKPROPAGATION")
-                print("loss totale :", loss, "denoise_loss :" denoise_loss)
+                print("loss totale :", loss, "denoise_loss :", denoise_loss)
                 print(f"Memory before backward: {torch.cuda.memory_allocated() / 1024**2:.2f} MB")
 
 
