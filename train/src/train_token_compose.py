@@ -405,7 +405,7 @@ def main(args):
                 print(f"Memory allocated: {torch.cuda.memory_allocated() / 1024**2} MB")
                 print(f"Memory reserved: {torch.cuda.memory_reserved() / 1024**2} MB")
                 
-
+                '''
                 # mid_8, up_16, up_32, up_64 for sd14
                 for train_layer in train_layers_ls:
                     layer_res = int(train_layer.split("_")[1])
@@ -429,7 +429,7 @@ def main(args):
                     token_loss += layer_token_loss
                     pixel_loss += layer_pixel_loss
 
-                grounding_loss = token_loss_scale * token_loss + pixel_loss_scale * pixel_loss
+                grounding_loss = token_loss_scale * token_loss + pixel_loss_scale * pixel_loss'''
 
                 denoise_loss = F.mse_loss(model_pred.float(), target.float(), reduction="mean")
 
@@ -441,10 +441,10 @@ def main(args):
                 loss_dict = {
                     "step/step_cnt" : step_cnt,
                     "lr/learning_rate" : lr,
-                    "train/token_loss_w_scale": token_loss_scale * token_loss,
-                    "train/pixel_loss_w_scale": pixel_loss_scale * pixel_loss,
+                    "train/token_loss_w_scale": 0, # token_loss_scale * token_loss
+                    "train/pixel_loss_w_scale": 0, # pixel_loss_scale * pixel_loss
                     "train/denoise_loss": denoise_loss,
-                    "train/total_loss": denoise_loss + grounding_loss,
+                    "train/total_loss": denoise_loss, # + grounding_loss,
                 }
 
                 # add grounding loss
@@ -454,7 +454,7 @@ def main(args):
                     for name, value in loss_dict.items():
                         wandb.log({name : value}, step=step_cnt)
 
-                loss = denoise_loss + grounding_loss
+                loss = denoise_loss #+ grounding_loss
 
                 # we reset controller twice because we use grad_checkpointing, which will have additional forward during the backward process
                 controller.reset()
@@ -465,6 +465,9 @@ def main(args):
                 train_loss += avg_loss.item() / args.gradient_accumulation_steps
 
                 print("BACKPROPAGATION")
+                print("loss totale :", loss, "denoise_loss :" denoise_loss)
+                print(f"Memory before backward: {torch.cuda.memory_allocated() / 1024**2:.2f} MB")
+
 
                 # Backpropagate
                 accelerator.backward(loss)
@@ -473,6 +476,8 @@ def main(args):
                 optimizer.step()
                 lr_scheduler.step()
                 optimizer.zero_grad()
+                print(f"Memory after backward: {torch.cuda.memory_allocated() / 1024**2:.2f} MB")
+
 
             # Checks if the accelerator has performed an optimization step behind the scenes
             if accelerator.sync_gradients:
