@@ -271,6 +271,12 @@ def main(args):
         accelerator.init_trackers(project_name=args.tracker_project_name, 
                                   config=tracker_config,
                                   init_kwargs=init_kwargs)
+        
+    print(f"Device used by Accelerator: {accelerator.device}")
+    print(f"Using device: {accelerator.device}")
+    print(f"Memory allocated: {torch.cuda.memory_allocated() / 1024**2} MB")
+    print(f"Memory reserved: {torch.cuda.memory_reserved() / 1024**2} MB")
+    print("TRAIN")
 
     # Train!
     total_batch_size = args.train_batch_size * accelerator.num_processes * args.gradient_accumulation_steps
@@ -393,9 +399,17 @@ def main(args):
 
                 grounding_loss_dict = {}
 
+                print("before attn_loss_dict")
+                print(f"Device used by Accelerator: {accelerator.device}")
+                print(f"Using device: {accelerator.device}")
+                print(f"Memory allocated: {torch.cuda.memory_allocated() / 1024**2} MB")
+                print(f"Memory reserved: {torch.cuda.memory_reserved() / 1024**2} MB")
+                
+
                 # mid_8, up_16, up_32, up_64 for sd14
                 for train_layer in train_layers_ls:
                     layer_res = int(train_layer.split("_")[1])
+                    print(train_layer, layer_res)
 
                     attn_loss_dict = \
                         get_grounding_loss_by_layer(
@@ -449,6 +463,8 @@ def main(args):
                 avg_loss = accelerator.gather(loss.repeat(args.train_batch_size)).mean()
                                 
                 train_loss += avg_loss.item() / args.gradient_accumulation_steps
+
+                print("BACKPROPAGATION")
 
                 # Backpropagate
                 accelerator.backward(loss)
