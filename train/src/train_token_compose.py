@@ -49,7 +49,7 @@ def main(args):
 
     accelerator_project_config = ProjectConfiguration(project_dir=args.output_dir, logging_dir=logging_dir)
 
-    mixed_precision = "fp16" #None
+    mixed_precision = None #"fp16" #None
 
     print(f"PyTorch CUDA available: {torch.cuda.is_available()}")
     print(f"CUDA device: {torch.cuda.get_device_name(0)}")
@@ -59,8 +59,6 @@ def main(args):
         mixed_precision=mixed_precision,
         log_with=args.report_to,
         project_config=accelerator_project_config,
-        device_placement=True,
-        cpu=False
     )
 
     print(f"Device used by Accelerator: {accelerator.device}")
