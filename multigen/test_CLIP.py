@@ -3,21 +3,21 @@ from torch import nn
 from diffusers import StableDiffusionPipeline
 from transformers import CLIPTextModel, CLIPTokenizer
 
-# Classe pour adapter les dimensions du modèle CLIP
-class CLIPTextAdapter(nn.Module):
+# Wrapper pour adapter les dimensions et conserver les méthodes d'origine
+class CLIPTextWrapper(nn.Module):
     def __init__(self, text_encoder, target_dim):
         super().__init__()
         self.text_encoder = text_encoder
         self.projection = nn.Linear(512, target_dim)  # Adapter de 512 à 768
 
-    @property
-    def dtype(self):
-        return self.text_encoder.dtype  # S'assurer que .dtype est disponible
-
     def forward(self, input_ids, attention_mask=None):
         outputs = self.text_encoder(input_ids=input_ids, attention_mask=attention_mask)
         adapted_outputs = self.projection(outputs.last_hidden_state)
         return adapted_outputs
+
+    def __getattr__(self, name):
+        # Délègue tous les attributs/méthodes manquants au modèle d'origine
+        return getattr(self.text_encoder, name)
 
 # Charger la pipeline Stable Diffusion
 model_id = "mlpc-lab/TokenCompose_SD14_A"
@@ -31,7 +31,7 @@ new_text_encoder = CLIPTextModel.from_pretrained(new_clip_model_id)
 new_tokenizer = CLIPTokenizer.from_pretrained(new_clip_model_id)
 
 # Ajouter une projection pour rendre les dimensions compatibles
-adapted_text_encoder = CLIPTextAdapter(new_text_encoder, target_dim=768)
+adapted_text_encoder = CLIPTextWrapper(new_text_encoder, target_dim=768)
 
 # Remplacer les composants CLIP dans la pipeline
 pipe.text_encoder = adapted_text_encoder
