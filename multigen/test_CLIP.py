@@ -1,22 +1,24 @@
 import torch
 from diffusers import StableDiffusionPipeline
+from transformers import CLIPTextModel, CLIPTokenizer
 
 model_id = "mlpc-lab/TokenCompose_SD14_A"
 device = "cuda"
 
-# Charger la pipeline
 pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
+
+# Charger un autre modèle CLIP
+new_clip_model_id = "openai/clip-vit-base-patch32"  # Ou votre modèle fine-tuné
+new_text_encoder = CLIPTextModel.from_pretrained(new_clip_model_id)
+new_tokenizer = CLIPTokenizer.from_pretrained(new_clip_model_id)
+
+# Remplacer les composants CLIP dans la pipeline
+pipe.text_encoder = new_text_encoder
+pipe.tokenizer = new_tokenizer
+
 pipe = pipe.to(device)
 
-# Inspecter le modèle CLIP utilisé (encodeur texte)
-text_encoder = pipe.text_encoder
-vision_encoder = pipe.vae  # Ou essayez pipe.image_encoder si disponible
-print(pipe)
-print(pipe.config)
-print("Vision encoder: ", vision_encoder.config)
+prompt = "A cat and a wine glass"
+image = pipe(prompt).images[0]  
 
-
-# Afficher des informations sur l'architecture
-print(f"CLIP Text Encoder: {text_encoder.config.architectures}")
-print(f"Number of layers: {text_encoder.config.num_hidden_layers}")
-print(f"Hidden size: {text_encoder.config.hidden_size}")
+image.save('testing_image.png')
