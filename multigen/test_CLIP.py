@@ -10,6 +10,10 @@ class CLIPTextAdapter(nn.Module):
         self.text_encoder = text_encoder
         self.projection = nn.Linear(512, target_dim)  # Adapter de 512 à 768
 
+    @property
+    def dtype(self):
+        return self.text_encoder.dtype  # S'assurer que .dtype est disponible
+
     def forward(self, input_ids, attention_mask=None):
         outputs = self.text_encoder(input_ids=input_ids, attention_mask=attention_mask)
         adapted_outputs = self.projection(outputs.last_hidden_state)
