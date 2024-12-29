@@ -16,8 +16,12 @@ class CLIPTextWrapper(nn.Module):
         return adapted_outputs
 
     def __getattr__(self, name):
-        # Délègue tous les attributs/méthodes manquants au modèle d'origine
-        return getattr(self.text_encoder, name)
+        # Protéger contre la récursion infinie
+        if name in self.__dict__:
+            return self.__dict__[name]
+        if hasattr(self.text_encoder, name):
+            return getattr(self.text_encoder, name)
+        raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
 
 # Charger la pipeline Stable Diffusion
 model_id = "mlpc-lab/TokenCompose_SD14_A"
