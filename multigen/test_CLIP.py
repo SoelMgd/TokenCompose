@@ -11,6 +11,8 @@ pipe = pipe.to(device)
 # Inspecter le modèle CLIP utilisé (encodeur texte)
 text_encoder = pipe.text_encoder
 vision_encoder = pipe.vae  # Ou essayez pipe.image_encoder si disponible
+print(pipe)
+print(pipe.config)
 print("Vision encoder: ", vision_encoder.config)
 
 
