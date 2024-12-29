@@ -2,7 +2,7 @@ import torch
 from diffusers import StableDiffusionPipeline
 from transformers import CLIPTextModel, CLIPTokenizer
 
-model_id = "mlpc-lab/TokenCompose_SD14_A"
+model_id = "mlpc-lab/TokenCompose_SD21_A"
 device = "cuda"
 
 pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
