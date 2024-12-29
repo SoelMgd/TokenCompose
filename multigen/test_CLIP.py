@@ -25,7 +25,7 @@ pipe.tokenizer = new_tokenizer
 pipe = pipe.to(device)
 
 # Effectuer une inférence
-prompt = "A cat and a wine glass"
+prompt = "An apple on a bench with a helicopter behind it."
 image = pipe(prompt).images[0]
 
 # Sauvegarder l'image
