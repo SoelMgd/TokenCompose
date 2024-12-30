@@ -235,7 +235,7 @@ class CLIPFineTuner:
 
 
 
-def custom_collate_fn(batch, max_combinations=4):
+def custom_collate_fn(batch, max_combinations=6):
     
     positive_pairs = [pair for item in batch for pair in item["positive_pairs"]]
     negative_pairs = [pair for item in batch for pair in item["negative_pairs"]]
