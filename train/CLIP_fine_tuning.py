@@ -52,7 +52,7 @@ class CocoGsamDataset(Dataset):
 
                 # If the mask has multiple channels, use only the first channel
                 if mask_np.ndim == 3:
-                    print("Using the first channel of the mask for segmentation.")
+                    #print("Using the first channel of the mask for segmentation.")
                     mask_np = mask_np[..., 0]  # Select the first channel
 
                 # Debug: Print mask information
@@ -174,7 +174,7 @@ class CLIPFineTuner:
         return loss.item()
 
     def prepare_inputs(self, rois, positive_pairs, negative_pairs):
-        """Prepare inputs for the model."""
+        """Prepare inputs for the model and validate tensor dimensions."""
         images = []
         texts = []
 
@@ -194,7 +194,23 @@ class CLIPFineTuner:
         image_inputs = torch.cat(images, dim=0)
         text_inputs = torch.cat(texts, dim=0)
 
+        # Debug: Validate tensor dimensions
+        print(f"Number of image tensors: {len(images)}, Image inputs shape: {image_inputs.shape}")
+        print(f"Number of text tensors: {len(texts)}, Text inputs shape: {text_inputs.shape}")
+
+        # Validate maximum sequence length for text inputs
+        max_seq_len = text_inputs.size(1)
+        if max_seq_len > 77:
+            print(f"Warning: Text input exceeds maximum sequence length (77). Found: {max_seq_len}")
+
+        # Ensure image and text inputs have matching batch sizes
+        if image_inputs.size(0) != text_inputs.size(0):
+            raise ValueError(
+                f"Mismatch in batch sizes: image_inputs={image_inputs.size(0)}, text_inputs={text_inputs.size(0)}"
+            )
+
         return {"image_inputs": image_inputs, "text_inputs": text_inputs}
+
 
     def train(self, dataloader, num_epochs=10):
         """Train the model."""
