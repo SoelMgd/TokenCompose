@@ -48,6 +48,8 @@ class CocoGsamDataset(Dataset):
             for mask_path in mask_files:
                 # Load mask
                 mask = Image.open(mask_path)
+                # Ensure the mask is single-channel (convert to grayscale)
+                mask = mask.convert("L")
                 mask_np = np.array(mask)
 
                 # Debug: Print mask information
@@ -66,6 +68,7 @@ class CocoGsamDataset(Dataset):
 
                 print(f"Bounding box min: {bbox_min}, max: {bbox_max}")
 
+                # Unpack bounding box
                 y_min, x_min = bbox_min.tolist()
                 y_max, x_max = bbox_max.tolist()
 
