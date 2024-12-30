@@ -107,7 +107,7 @@ class CocoGsamDataset(Dataset):
 
 # Fine-tuning CLIP
 class CLIPFineTuner:
-    def __init__(self, model_name="openai/clip-vit-large-patch14", lr=5e-5, tau=0.07, device="cuda" if torch.cuda.is_available() else "cpu"):
+    def __init__(self, model_name="openai/clip-vit-large-patch14-336", lr=5e-5, tau=0.07, device="cuda" if torch.cuda.is_available() else "cpu"):
         self.device = device
         self.tau = tau
 
