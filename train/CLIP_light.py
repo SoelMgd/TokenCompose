@@ -140,9 +140,9 @@ class CLIPFineTuner:
         positive_pairs = batch['positive_pairs']
         negative_pairs = batch['negative_pairs']
 
-        print("Batch of ROIs:", len(rois))
-        print("Positive Pairs:", len(positive_pairs))  # Show total number of positive pairs
-        print("Negative Pairs:", len(negative_pairs))  # Show total number of negative pairs
+        #print("Batch of ROIs:", len(rois))
+        #print("Positive Pairs:", len(positive_pairs))  # Show total number of positive pairs
+        #print("Negative Pairs:", len(negative_pairs))  # Show total number of negative pairs
 
         # Prepare data
         inputs = self.prepare_inputs(rois, positive_pairs, negative_pairs)
@@ -150,8 +150,8 @@ class CLIPFineTuner:
         text_inputs = inputs['text_inputs'].to(self.device)
 
         # Debug: Print shapes of inputs
-        print(f"Image inputs shape: {image_inputs.shape}")
-        print(f"Text inputs shape: {text_inputs.shape}")
+        #print(f"Image inputs shape: {image_inputs.shape}")
+        #print(f"Text inputs shape: {text_inputs.shape}")
 
         # Zero gradients
         self.optimizer.zero_grad()
@@ -197,8 +197,8 @@ class CLIPFineTuner:
         text_inputs = torch.nn.utils.rnn.pad_sequence(texts, batch_first=True, padding_value=self.processor.tokenizer.pad_token_id)
 
         # Debug: Validate tensor dimensions
-        print(f"Number of image tensors: {len(images)}, Image inputs shape: {image_inputs.shape}")
-        print(f"Number of text tensors: {len(texts)}, Text inputs shape: {text_inputs.shape}")
+        #print(f"Number of image tensors: {len(images)}, Image inputs shape: {image_inputs.shape}")
+        #print(f"Number of text tensors: {len(texts)}, Text inputs shape: {text_inputs.shape}")
 
         # Validate maximum sequence length for text inputs
         max_seq_len = text_inputs.size(1)
@@ -246,10 +246,13 @@ class CLIPFineTuner:
 
 
 
-def custom_collate_fn(batch, max_combinations=2):
+def custom_collate_fn(batch, max_combinations=4):
+    
     rois = [roi for item in batch for roi in item["rois"]]
     positive_pairs = [pair for item in batch for pair in item["positive_pairs"]]
     negative_pairs = [pair for item in batch for pair in item["negative_pairs"]]
+
+    print("len ROIs, positive_pairs, negative_pairs", len(rois), len(positive_pairs), len(negative_pairs))
 
     # Fractionner les combinaisons
     rois = rois[:max_combinations]
