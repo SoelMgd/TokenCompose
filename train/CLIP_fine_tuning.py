@@ -30,65 +30,73 @@ class CocoGsamDataset(Dataset):
         return len(self.img_files)
 
     def __getitem__(self, idx):
-        # Load image
-        img_path = self.img_files[idx]
-        img_id = os.path.basename(img_path).split('.')[0]
-        image = Image.open(img_path).convert("RGB")
+            # Load image
+            img_path = self.img_files[idx]
+            img_id = os.path.basename(img_path).split('.')[0]
+            image = Image.open(img_path).convert("RGB")
 
-        # Load corresponding masks
-        mask_dir = os.path.join(self.seg_dir, img_id)
-        mask_files = glob.glob(os.path.join(mask_dir, "*.png"))
+            # Load corresponding masks
+            mask_dir = os.path.join(self.seg_dir, img_id)
+            mask_files = glob.glob(os.path.join(mask_dir, "*.png"))
 
-        # Prepare data
-        rois = []
-        positive_pairs = []
-        negative_pairs = []
-        names = [os.path.basename(mask).split('_')[-1].split('.')[0] for mask in mask_files]
+            # Prepare data
+            rois = []
+            positive_pairs = []
+            negative_pairs = []
+            names = [os.path.basename(mask).split('_')[-1].split('.')[0] for mask in mask_files]
 
-        for mask_path in mask_files:
-            # Load mask
-            mask = Image.open(mask_path)
-            mask_np = np.array(mask)
+            for mask_path in mask_files:
+                # Load mask
+                mask = Image.open(mask_path)
+                mask_np = np.array(mask)
 
-            # Get bounding box of the mask
-            coords = np.argwhere(mask_np > 0)  # Ensure mask is binary or non-zero
-            if coords.shape[0] == 0:
-                continue  # Skip empty masks
+                # Debug: Print mask information
+                print(f"Processing mask: {mask_path}")
+                print(f"Mask shape: {mask_np.shape}")
+                print(f"Non-zero values in mask: {np.count_nonzero(mask_np)}")
 
-            bbox_min = coords.min(axis=0)
-            bbox_max = coords.max(axis=0)
+                # Get bounding box of the mask
+                coords = np.argwhere(mask_np > 0)  # Ensure mask is binary or non-zero
+                if coords.shape[0] == 0:
+                    print("Skipping empty mask.")
+                    continue  # Skip empty masks
 
-            y_min, x_min = bbox_min.tolist()
-            y_max, x_max = bbox_max.tolist()
+                bbox_min = coords.min(axis=0)
+                bbox_max = coords.max(axis=0)
 
-            # Crop the ROI from the image using the bounding box
-            roi = image.crop((x_min, y_min, x_max, y_max))
+                print(f"Bounding box min: {bbox_min}, max: {bbox_max}")
 
-            # Resize the ROI to the target size
-            roi = roi.resize(self.target_size, Image.ANTIALIAS)
+                y_min, x_min = bbox_min.tolist()
+                y_max, x_max = bbox_max.tolist()
 
-            # Extract name from the mask file
-            obj_name = os.path.basename(mask_path).split('_')[-1].split('.')[0]
+                # Crop the ROI from the image using the bounding box
+                roi = image.crop((x_min, y_min, x_max, y_max))
 
-            # Positive pair: (ROI, obj_name)
-            positive_pairs.append((roi, obj_name))
+                # Resize the ROI to the target size
+                roi = roi.resize(self.target_size, Image.ANTIALIAS)
 
-            # Negative pairs: (ROI, other_names)
-            other_names = [name for name in names if name != obj_name]
-            for neg_name in other_names:
-                negative_pairs.append((roi, neg_name))
+                # Extract name from the mask file
+                obj_name = os.path.basename(mask_path).split('_')[-1].split('.')[0]
 
-            rois.append(roi)
+                # Positive pair: (ROI, obj_name)
+                positive_pairs.append((roi, obj_name))
 
-        # Apply transformations if any
-        if self.transform:
-            rois = [self.transform(roi) for roi in rois]
+                # Negative pairs: (ROI, other_names)
+                other_names = [name for name in names if name != obj_name]
+                for neg_name in other_names:
+                    negative_pairs.append((roi, neg_name))
 
-        return {
-            "rois": rois,
-            "positive_pairs": positive_pairs,
-            "negative_pairs": negative_pairs
-        }
+                rois.append(roi)
+
+            # Apply transformations if any
+            if self.transform:
+                rois = [self.transform(roi) for roi in rois]
+
+            return {
+                "rois": rois,
+                "positive_pairs": positive_pairs,
+                "negative_pairs": negative_pairs
+            }
 
 
 
