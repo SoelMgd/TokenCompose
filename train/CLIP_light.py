@@ -246,7 +246,7 @@ class CLIPFineTuner:
 
 
 
-def custom_collate_fn(batch, max_combinations=4):
+def custom_collate_fn(batch, max_combinations=3):
     
     rois = [roi for item in batch for roi in item["rois"]]
     positive_pairs = [pair for item in batch for pair in item["positive_pairs"]]
