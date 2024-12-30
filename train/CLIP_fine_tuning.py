@@ -183,16 +183,18 @@ class CLIPFineTuner:
 
             # Add positive pair
             images.append(roi_tensor)
-            texts.append(self.processor(text=[pos_text], return_tensors="pt")["input_ids"][0])
+            encoded_pos_text = self.processor(text=[pos_text], return_tensors="pt", padding=True, truncation=True)["input_ids"]
+            texts.append(encoded_pos_text[0])  # Extract from batch
 
             # Add negative pairs
             for neg_text in [neg[1] for neg in negative_pairs]:
                 images.append(roi_tensor)
-                texts.append(self.processor(text=[neg_text], return_tensors="pt")["input_ids"][0])
+                encoded_neg_text = self.processor(text=[neg_text], return_tensors="pt", padding=True, truncation=True)["input_ids"]
+                texts.append(encoded_neg_text[0])  # Extract from batch
 
         # Stack tensors
         image_inputs = torch.cat(images, dim=0)
-        text_inputs = torch.cat(texts, dim=0)
+        text_inputs = torch.nn.utils.rnn.pad_sequence(texts, batch_first=True, padding_value=self.processor.tokenizer.pad_token_id)
 
         # Debug: Validate tensor dimensions
         print(f"Number of image tensors: {len(images)}, Image inputs shape: {image_inputs.shape}")
@@ -210,6 +212,7 @@ class CLIPFineTuner:
             )
 
         return {"image_inputs": image_inputs, "text_inputs": text_inputs}
+
 
 
     def train(self, dataloader, num_epochs=10):
