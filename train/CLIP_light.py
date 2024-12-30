@@ -40,7 +40,6 @@ class CocoGsamDataset(Dataset):
             mask_files = glob.glob(os.path.join(mask_dir, "*.png"))
 
             # Prepare data
-            rois = []
             positive_pairs = []
             negative_pairs = []
             names = [os.path.basename(mask).split('_')[-1].split('.')[0] for mask in mask_files]
@@ -91,14 +90,13 @@ class CocoGsamDataset(Dataset):
                 for neg_name in other_names:
                     negative_pairs.append((roi, neg_name))
 
-                rois.append(roi)
 
             # Apply transformations if any
             if self.transform:
-                rois = [self.transform(roi) for roi in rois]
+                positive_pairs = [(self.transform(roi), name) for roi, name in positive_pairs]
+                negative_pairs = [(self.transform(roi), name) for roi, name in negative_pairs]
 
             return {
-                "rois": rois,
                 "positive_pairs": positive_pairs,
                 "negative_pairs": negative_pairs
             }
@@ -136,22 +134,17 @@ class CLIPFineTuner:
 
     def train_step(self, batch):
         """Perform a single training step."""
-        rois = batch['rois']  # List of ROI images
         positive_pairs = batch['positive_pairs']
         negative_pairs = batch['negative_pairs']
 
-        #print("Batch of ROIs:", len(rois))
-        #print("Positive Pairs:", len(positive_pairs))  # Show total number of positive pairs
-        #print("Negative Pairs:", len(negative_pairs))  # Show total number of negative pairs
-
         # Prepare data
-        inputs = self.prepare_inputs(rois, positive_pairs, negative_pairs)
+        inputs = self.prepare_inputs(positive_pairs, negative_pairs)
         image_inputs = inputs['image_inputs'].to(self.device)
         text_inputs = inputs['text_inputs'].to(self.device)
 
         # Debug: Print shapes of inputs
-        #print(f"Image inputs shape: {image_inputs.shape}")
-        #print(f"Text inputs shape: {text_inputs.shape}")
+        print(f"Image inputs shape: {image_inputs.shape}")
+        print(f"Text inputs shape: {text_inputs.shape}")
 
         # Zero gradients
         self.optimizer.zero_grad()
@@ -173,12 +166,12 @@ class CLIPFineTuner:
 
         return loss.item()
 
-    def prepare_inputs(self, rois, positive_pairs, negative_pairs):
+    def prepare_inputs(self, positive_pairs, negative_pairs):
         """Prepare inputs for the model and validate tensor dimensions."""
         images = []
         texts = []
 
-        for roi, (roi_image, pos_text) in zip(rois, positive_pairs):
+        for roi_image, pos_text in positive_pairs:
             roi_tensor = self.processor(images=roi_image, return_tensors="pt")["pixel_values"]
 
             # Add positive pair
@@ -186,19 +179,21 @@ class CLIPFineTuner:
             encoded_pos_text = self.processor(text=[pos_text], return_tensors="pt", padding=True, truncation=True)["input_ids"]
             texts.append(encoded_pos_text[0])  # Extract from batch
 
-            # Add negative pairs
-            for neg_text in [neg[1] for neg in negative_pairs]:
-                images.append(roi_tensor)
-                encoded_neg_text = self.processor(text=[neg_text], return_tensors="pt", padding=True, truncation=True)["input_ids"]
-                texts.append(encoded_neg_text[0])  # Extract from batch
+        for roi_image, neg_text in negative_pairs:
+            roi_tensor = self.processor(images=roi_image, return_tensors="pt")["pixel_values"]
+
+            # Add negative pair
+            images.append(roi_tensor)
+            encoded_neg_text = self.processor(text=[neg_text], return_tensors="pt", padding=True, truncation=True)["input_ids"]
+            texts.append(encoded_neg_text[0])  # Extract from batch
 
         # Stack tensors
         image_inputs = torch.cat(images, dim=0)
         text_inputs = torch.nn.utils.rnn.pad_sequence(texts, batch_first=True, padding_value=self.processor.tokenizer.pad_token_id)
 
         # Debug: Validate tensor dimensions
-        #print(f"Number of image tensors: {len(images)}, Image inputs shape: {image_inputs.shape}")
-        #print(f"Number of text tensors: {len(texts)}, Text inputs shape: {text_inputs.shape}")
+        print(f"Number of image tensors: {len(images)}, Image inputs shape: {image_inputs.shape}")
+        print(f"Number of text tensors: {len(texts)}, Text inputs shape: {text_inputs.shape}")
 
         # Validate maximum sequence length for text inputs
         max_seq_len = text_inputs.size(1)
@@ -212,7 +207,6 @@ class CLIPFineTuner:
             )
 
         return {"image_inputs": image_inputs, "text_inputs": text_inputs}
-    
 
     def save_model(self, output_dir="clip_finetuned_model"):
         """
@@ -223,9 +217,6 @@ class CLIPFineTuner:
         self.processor.save_pretrained(output_dir)
         print(f"Model and processor saved to {output_dir}")
 
-
-
-
     def train(self, dataloader, num_epochs=10):
         """Train the model."""
         self.model.train()
@@ -233,10 +224,9 @@ class CLIPFineTuner:
         for epoch in range(num_epochs):
             total_loss = 0
             for batch in dataloader:
-
                 loss = self.train_step(batch)
                 total_loss += loss
-                
+
                 # Debug: Print batch loss
                 print(f"Batch Loss: {loss:.4f}")
 
@@ -245,22 +235,18 @@ class CLIPFineTuner:
 
 
 
-
 def custom_collate_fn(batch, max_combinations=3):
     
-    rois = [roi for item in batch for roi in item["rois"]]
     positive_pairs = [pair for item in batch for pair in item["positive_pairs"]]
     negative_pairs = [pair for item in batch for pair in item["negative_pairs"]]
 
-    print("len ROIs, positive_pairs, negative_pairs", len(rois), len(positive_pairs), len(negative_pairs))
+    print("len positive_pairs, negative_pairs", len(positive_pairs), len(negative_pairs))
 
     # Fractionner les combinaisons
-    rois = rois[:max_combinations]
     positive_pairs = positive_pairs[:max_combinations]
     negative_pairs = negative_pairs[:max_combinations]
 
     return {
-        "rois": rois,
         "positive_pairs": positive_pairs,
         "negative_pairs": negative_pairs,
     }
