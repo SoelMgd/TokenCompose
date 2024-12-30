@@ -55,8 +55,11 @@ class CocoGsamDataset(Dataset):
             if coords.shape[0] == 0:
                 continue  # Skip empty masks
 
-            y_min, x_min = coords.min(axis=0)
-            y_max, x_max = coords.max(axis=0)
+            bbox_min = coords.min(axis=0)
+            bbox_max = coords.max(axis=0)
+
+            y_min, x_min = bbox_min
+            y_max, x_max = bbox_max
 
             # Crop the ROI from the image using the bounding box
             roi = image.crop((x_min, y_min, x_max, y_max))
