@@ -30,7 +30,7 @@ pipe.tokenizer = new_tokenizer
 pipe = pipe.to(device)
 
 # Effectuer une inférence
-prompt = "A toilet in front of the ocean, with grass and dandelions growing around it."
+prompt = "A toilet in front of the ocean"
 image = pipe(prompt).images[0]
 
 # Sauvegarder l'image
