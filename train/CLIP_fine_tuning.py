@@ -274,7 +274,7 @@ if __name__ == "__main__":
     print("dataset")
     dataset = CocoGsamDataset(img_dir=img_dir, seg_dir=seg_dir, transform=transform)
     print("dataloader")
-    dataloader = DataLoader(dataset, batch_size=2, shuffle=True, collate_fn=custom_collate_fn)
+    dataloader = DataLoader(dataset, batch_size=1, shuffle=True, collate_fn=custom_collate_fn)
 
     # Fine-tuning
     fine_tuner = CLIPFineTuner()
