@@ -107,7 +107,7 @@ class CocoGsamDataset(Dataset):
 
 # Fine-tuning CLIP
 class CLIPFineTuner:
-    def __init__(self, model_name="openai/clip-vit-base-patch32", lr=5e-5, tau=0.07, device="cuda" if torch.cuda.is_available() else "cpu"):
+    def __init__(self, model_name="openai/clip-vit-large-patch14", lr=5e-5, tau=0.07, device="cuda" if torch.cuda.is_available() else "cpu"):
         self.device = device
         self.tau = tau
 
@@ -212,6 +212,17 @@ class CLIPFineTuner:
             )
 
         return {"image_inputs": image_inputs, "text_inputs": text_inputs}
+    
+
+    def save_model(self, output_dir="clip_finetuned_model"):
+        """
+        Save the fine-tuned CLIP model and tokenizer to the specified directory.
+        """
+        os.makedirs(output_dir, exist_ok=True)
+        self.model.save_pretrained(output_dir)
+        self.processor.save_pretrained(output_dir)
+        print(f"Model and processor saved to {output_dir}")
+
 
 
 
@@ -230,6 +241,7 @@ class CLIPFineTuner:
                 print(f"Batch Loss: {loss:.4f}")
 
             print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {total_loss / len(dataloader):.4f}")
+        self.save_model()
 
 
 
@@ -262,9 +274,9 @@ if __name__ == "__main__":
     print("dataset")
     dataset = CocoGsamDataset(img_dir=img_dir, seg_dir=seg_dir, transform=transform)
     print("dataloader")
-    dataloader = DataLoader(dataset, batch_size=1, shuffle=True, collate_fn=custom_collate_fn)
+    dataloader = DataLoader(dataset, batch_size=2, shuffle=True, collate_fn=custom_collate_fn)
 
     # Fine-tuning
     fine_tuner = CLIPFineTuner()
     print("finetuning")
-    fine_tuner.train(dataloader, num_epochs=10)
+    fine_tuner.train(dataloader, num_epochs=5)
