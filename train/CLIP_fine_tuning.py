@@ -51,15 +51,15 @@ class CocoGsamDataset(Dataset):
             mask_np = np.array(mask)
 
             # Get bounding box of the mask
-            coords = np.argwhere(mask_np)
+            coords = np.argwhere(mask_np > 0)  # Ensure mask is binary or non-zero
             if coords.shape[0] == 0:
                 continue  # Skip empty masks
 
             bbox_min = coords.min(axis=0)
             bbox_max = coords.max(axis=0)
 
-            y_min, x_min = bbox_min
-            y_max, x_max = bbox_max
+            y_min, x_min = bbox_min.tolist()
+            y_max, x_max = bbox_max.tolist()
 
             # Crop the ROI from the image using the bounding box
             roi = image.crop((x_min, y_min, x_max, y_max))
