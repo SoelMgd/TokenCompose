@@ -48,9 +48,12 @@ class CocoGsamDataset(Dataset):
             for mask_path in mask_files:
                 # Load mask
                 mask = Image.open(mask_path)
-                # Ensure the mask is single-channel (convert to grayscale)
-                mask = mask.convert("L")
                 mask_np = np.array(mask)
+
+                # If the mask has multiple channels, use only the first channel
+                if mask_np.ndim == 3:
+                    print("Using the first channel of the mask for segmentation.")
+                    mask_np = mask_np[..., 0]  # Select the first channel
 
                 # Debug: Print mask information
                 print(f"Processing mask: {mask_path}")
@@ -68,10 +71,9 @@ class CocoGsamDataset(Dataset):
 
                 print(f"Bounding box min: {bbox_min}, max: {bbox_max}")
 
-                # Unpack bounding box
                 y_min, x_min = bbox_min.tolist()
                 y_max, x_max = bbox_max.tolist()
-
+            
                 # Crop the ROI from the image using the bounding box
                 roi = image.crop((x_min, y_min, x_max, y_max))
 
