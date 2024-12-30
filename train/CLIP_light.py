@@ -143,8 +143,8 @@ class CLIPFineTuner:
         text_inputs = inputs['text_inputs'].to(self.device)
 
         # Debug: Print shapes of inputs
-        print(f"Image inputs shape: {image_inputs.shape}")
-        print(f"Text inputs shape: {text_inputs.shape}")
+        #print(f"Image inputs shape: {image_inputs.shape}")
+        #print(f"Text inputs shape: {text_inputs.shape}")
 
         # Zero gradients
         self.optimizer.zero_grad()
@@ -192,8 +192,8 @@ class CLIPFineTuner:
         text_inputs = torch.nn.utils.rnn.pad_sequence(texts, batch_first=True, padding_value=self.processor.tokenizer.pad_token_id)
 
         # Debug: Validate tensor dimensions
-        print(f"Number of image tensors: {len(images)}, Image inputs shape: {image_inputs.shape}")
-        print(f"Number of text tensors: {len(texts)}, Text inputs shape: {text_inputs.shape}")
+        #print(f"Number of image tensors: {len(images)}, Image inputs shape: {image_inputs.shape}")
+        #print(f"Number of text tensors: {len(texts)}, Text inputs shape: {text_inputs.shape}")
 
         # Validate maximum sequence length for text inputs
         max_seq_len = text_inputs.size(1)
@@ -235,16 +235,18 @@ class CLIPFineTuner:
 
 
 
-def custom_collate_fn(batch, max_combinations=3):
+def custom_collate_fn(batch, max_combinations=4):
     
     positive_pairs = [pair for item in batch for pair in item["positive_pairs"]]
     negative_pairs = [pair for item in batch for pair in item["negative_pairs"]]
 
-    print("len positive_pairs, negative_pairs", len(positive_pairs), len(negative_pairs))
+    print("len BEFORE positive_pairs, negative_pairs", len(positive_pairs), len(negative_pairs))
 
     # Fractionner les combinaisons
     positive_pairs = positive_pairs[:max_combinations]
     negative_pairs = negative_pairs[:max_combinations]
+
+    print("len AFTER , negative_pairs", len(positive_pairs), len(negative_pairs))
 
     return {
         "positive_pairs": positive_pairs,
