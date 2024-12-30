@@ -57,8 +57,8 @@ class CocoGsamDataset(Dataset):
 
                 # Debug: Print mask information
                 print(f"Processing mask: {mask_path}")
-                print(f"Mask shape: {mask_np.shape}")
-                print(f"Non-zero values in mask: {np.count_nonzero(mask_np)}")
+                #print(f"Mask shape: {mask_np.shape}")
+                #print(f"Non-zero values in mask: {np.count_nonzero(mask_np)}")
 
                 # Get bounding box of the mask
                 coords = np.argwhere(mask_np > 0)  # Ensure mask is binary or non-zero
@@ -69,7 +69,7 @@ class CocoGsamDataset(Dataset):
                 bbox_min = coords.min(axis=0)
                 bbox_max = coords.max(axis=0)
 
-                print(f"Bounding box min: {bbox_min}, max: {bbox_max}")
+                #print(f"Bounding box min: {bbox_min}, max: {bbox_max}")
 
                 y_min, x_min = bbox_min.tolist()
                 y_max, x_max = bbox_max.tolist()
@@ -140,6 +140,10 @@ class CLIPFineTuner:
         positive_pairs = batch['positive_pairs']
         negative_pairs = batch['negative_pairs']
 
+        print("Batch of ROIs:", len(rois))
+        print("Positive Pairs:", len(positive_pairs))  # Show total number of positive pairs
+        print("Negative Pairs:", len(negative_pairs))  # Show total number of negative pairs
+
         # Prepare data
         inputs = self.prepare_inputs(rois, positive_pairs, negative_pairs)
         image_inputs = inputs['image_inputs'].to(self.device)
@@ -199,6 +203,7 @@ class CLIPFineTuner:
         for epoch in range(num_epochs):
             total_loss = 0
             for batch in dataloader:
+
                 loss = self.train_step(batch)
                 total_loss += loss
                 
@@ -206,6 +211,23 @@ class CLIPFineTuner:
                 print(f"Batch Loss: {loss:.4f}")
 
             print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {total_loss / len(dataloader):.4f}")
+
+
+
+
+def custom_collate_fn(batch):
+    """
+    Custom collate function to handle uneven batch data.
+    """
+    rois = [roi for item in batch for roi in item["rois"]]
+    positive_pairs = [pair for item in batch for pair in item["positive_pairs"]]
+    negative_pairs = [pair for item in batch for pair in item["negative_pairs"]]
+
+    return {
+        "rois": rois,
+        "positive_pairs": positive_pairs,
+        "negative_pairs": negative_pairs,
+    }
 
 # Example usage
 if __name__ == "__main__":
@@ -218,10 +240,12 @@ if __name__ == "__main__":
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
-
+    print("dataset")
     dataset = CocoGsamDataset(img_dir=img_dir, seg_dir=seg_dir, transform=transform)
-    dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
+    print("dataloader")
+    dataloader = DataLoader(dataset, batch_size=4, shuffle=True, collate_fn=custom_collate_fn)
 
     # Fine-tuning
     fine_tuner = CLIPFineTuner()
+    print("finetuning")
     fine_tuner.train(dataloader, num_epochs=10)
