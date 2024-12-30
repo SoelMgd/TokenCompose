@@ -17,14 +17,14 @@ new_clip_model_id = "openai/clip-vit-large-patch14-336" #"openai/clip-vit-base-p
 new_text_encoder = CLIPTextModel.from_pretrained(new_clip_model_id)
 new_tokenizer = CLIPTokenizer.from_pretrained(new_clip_model_id)'''
 
-fine_tuned_clip_model_dir = "../train/clip_finetuned_model"  # Chemin où vos poids sont sauvegardés
-new_text_encoder = CLIPTextModel.from_pretrained(fine_tuned_clip_model_dir)
-new_tokenizer = CLIPTokenizer.from_pretrained(fine_tuned_clip_model_dir)
+#fine_tuned_clip_model_dir = "../train/clip_finetuned_model"  # Chemin où vos poids sont sauvegardés
+#new_text_encoder = CLIPTextModel.from_pretrained(fine_tuned_clip_model_dir)
+#new_tokenizer = CLIPTokenizer.from_pretrained(fine_tuned_clip_model_dir)
 
 
 # Remplacer les composants CLIP dans la pipeline
-pipe.text_encoder = new_text_encoder
-pipe.tokenizer = new_tokenizer
+#pipe.text_encoder = new_text_encoder
+#pipe.tokenizer = new_tokenizer
 
 # Transférer la pipeline sur le GPU
 pipe = pipe.to(device)
