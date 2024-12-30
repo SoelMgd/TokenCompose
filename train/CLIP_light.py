@@ -62,7 +62,7 @@ class CocoGsamDataset(Dataset):
                 # Get bounding box of the mask
                 coords = np.argwhere(mask_np > 0)  # Ensure mask is binary or non-zero
                 if coords.shape[0] == 0:
-                    print("Skipping empty mask.")
+                    #print("Skipping empty mask.")
                     continue  # Skip empty masks
 
                 bbox_min = coords.min(axis=0)
@@ -223,12 +223,14 @@ class CLIPFineTuner:
 
         for epoch in range(num_epochs):
             total_loss = 0
+            num=-1
             for batch in dataloader:
+                num +=1
                 loss = self.train_step(batch)
                 total_loss += loss
 
                 # Debug: Print batch loss
-                print(f"Batch Loss: {loss:.4f}")
+                print(f"Batch number {num}, Loss: {loss:.4f}")
 
             print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {total_loss / len(dataloader):.4f}")
         self.save_model()
@@ -240,13 +242,13 @@ def custom_collate_fn(batch, max_combinations=6):
     positive_pairs = [pair for item in batch for pair in item["positive_pairs"]]
     negative_pairs = [pair for item in batch for pair in item["negative_pairs"]]
 
-    print("len BEFORE positive_pairs, negative_pairs", len(positive_pairs), len(negative_pairs))
+    #print("len BEFORE positive_pairs, negative_pairs", len(positive_pairs), len(negative_pairs))
 
     # Fractionner les combinaisons
     positive_pairs = positive_pairs[:max_combinations]
     negative_pairs = negative_pairs[:max_combinations]
 
-    print("len AFTER , negative_pairs", len(positive_pairs), len(negative_pairs))
+    #print("len AFTER , negative_pairs", len(positive_pairs), len(negative_pairs))
 
     return {
         "positive_pairs": positive_pairs,
