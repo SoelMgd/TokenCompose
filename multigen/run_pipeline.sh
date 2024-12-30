@@ -7,7 +7,7 @@ NUM_GPUS=1
 MASTER_PORT=$(expr $RANDOM + 1000)
 
 # text config
-TEXT_FILE_PATH="coco_obj_comp_5_25.json"
+TEXT_FILE_PATH="coco_obj_comp_5_50.json"
 
 # model config
 MODEL_NAME="mlpc-lab/TokenCompose_SD14_B"
