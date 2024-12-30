@@ -56,7 +56,7 @@ class CocoGsamDataset(Dataset):
                     mask_np = mask_np[..., 0]  # Select the first channel
 
                 # Debug: Print mask information
-                print(f"Processing mask: {mask_path}")
+                #print(f"Processing mask: {mask_path}")
                 #print(f"Mask shape: {mask_np.shape}")
                 #print(f"Non-zero values in mask: {np.count_nonzero(mask_np)}")
 
