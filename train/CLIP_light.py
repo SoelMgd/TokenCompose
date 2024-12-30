@@ -154,8 +154,8 @@ class CLIPFineTuner:
         text_outputs = self.model.get_text_features(input_ids=text_inputs)
 
         # Debug: Print embeddings
-        print(f"Image embeddings shape: {image_outputs.shape}")
-        print(f"Text embeddings shape: {text_outputs.shape}")
+        #print(f"Image embeddings shape: {image_outputs.shape}")
+        #print(f"Text embeddings shape: {text_outputs.shape}")
 
         # Compute loss
         loss = self.info_nce_loss(image_outputs, text_outputs)
