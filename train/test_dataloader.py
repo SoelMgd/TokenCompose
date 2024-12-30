@@ -122,9 +122,10 @@ def custom_collate_fn(batch):
         "negative_pairs": negative_pairs,
     }
 
-def validate_batch(batch):
+def validate_batch(batch, batch_idx):
     """
     Validate that all data in the batch has the same structure.
+    Returns True if valid, False otherwise.
     """
     try:
         rois = batch["rois"]
@@ -134,23 +135,27 @@ def validate_batch(batch):
         # Check if ROI tensors have consistent dimensions
         roi_shapes = [roi.shape for roi in rois]
         if len(set(roi_shapes)) > 1:
-            print("Inconsistent ROI shapes:", roi_shapes)
-        else:
-            print("All ROI shapes are consistent.")
+            print(f"Inconsistent ROI shapes in batch {batch_idx}: {roi_shapes}")
+            return False
 
         # Check if all positive pairs are tuples with the expected structure
         for i, pair in enumerate(positive_pairs):
             if not (isinstance(pair, tuple) and len(pair) == 2):
-                print(f"Inconsistent positive pair at index {i}: {pair}")
+                print(f"Inconsistent positive pair at index {i} in batch {batch_idx}: {pair}")
+                return False
 
         # Check if all negative pairs are tuples with the expected structure
         for i, pair in enumerate(negative_pairs):
             if not (isinstance(pair, tuple) and len(pair) == 2):
-                print(f"Inconsistent negative pair at index {i}: {pair}")
+                print(f"Inconsistent negative pair at index {i} in batch {batch_idx}: {pair}")
+                return False
 
-        print("Batch validation passed.")
+        # If everything is valid
+        return True
     except Exception as e:
-        print("Batch validation failed:", e)
+        print(f"Batch validation failed in batch {batch_idx}: {e}")
+        return False
+
 
 if __name__ == "__main__":
     # Define paths
@@ -167,21 +172,21 @@ if __name__ == "__main__":
     dataset = CocoGsamDataset(img_dir=img_dir, seg_dir=seg_dir, transform=transform)
     dataloader = DataLoader(dataset, batch_size=4, shuffle=True, collate_fn=custom_collate_fn)
 
-    # Iterate through the DataLoader and validate batch structure
-    print("Testing DataLoader with validation...")
+    # Iterate through the DataLoader and validate all batches
+    print("Testing DataLoader for all batches...")
+    invalid_batches = 0
+
     for batch_idx, batch in enumerate(dataloader):
-        print(f"\nBatch {batch_idx + 1}:")
-        rois = batch["rois"]
-        positive_pairs = batch["positive_pairs"]
-        negative_pairs = batch["negative_pairs"]
+        is_valid = validate_batch(batch, batch_idx)
 
-        # Print dimensions of data
-        print(f"  Number of ROIs: {len(rois)}")
-        print(f"  Number of Positive Pairs: {len(positive_pairs)}")
-        print(f"  Number of Negative Pairs: {len(negative_pairs)}")
+        if not is_valid:
+            invalid_batches += 1
+            print(f"Batch {batch_idx + 1} is INVALID.\n")
+        else:
+            print(f"Batch {batch_idx + 1} is valid.")
 
-        # Validate batch structure
-        validate_batch(batch)
-
-        # Break after first batch for testing
-        break
+    if invalid_batches > 0:
+        print(f"\nNumber of invalid batches: {invalid_batches}")
+    else:
+        print("\nAll batches are valid.")
+        
