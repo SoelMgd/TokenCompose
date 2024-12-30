@@ -217,14 +217,16 @@ class CLIPFineTuner:
         self.processor.save_pretrained(output_dir)
         print(f"Model and processor saved to {output_dir}")
 
-    def train(self, dataloader, num_epochs=10):
+    def train(self, dataloader, num_epochs=10, max_batch=None):
         """Train the model."""
         self.model.train()
 
         for epoch in range(num_epochs):
             total_loss = 0
             num=-1
-            for batch in dataloader:
+            for batch_idx, batch in enumerate(dataloader):
+                if max_batch and batch_idx >= max_batch:
+                    break
                 num +=1
                 loss = self.train_step(batch)
                 total_loss += loss
@@ -275,4 +277,4 @@ if __name__ == "__main__":
     # Fine-tuning
     fine_tuner = CLIPFineTuner()
     print("finetuning")
-    fine_tuner.train(dataloader, num_epochs=1)
+    fine_tuner.train(dataloader, num_epochs=1, max_batch=100)
