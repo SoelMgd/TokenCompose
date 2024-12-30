@@ -1,0 +1,1002 @@
+[
+    {
+        "unique_id": 0,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "book"
+        ],
+        "obj_2_attributes": [
+            "cup"
+        ],
+        "obj_3_attributes": [
+            "kite"
+        ],
+        "obj_4_attributes": [
+            "mouse"
+        ],
+        "obj_5_attributes": [
+            "surfboard"
+        ],
+        "text": "a photo of a book, a cup, a kite, a mouse, and a surfboard."
+    },
+    {
+        "unique_id": 1,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "wine glass"
+        ],
+        "obj_2_attributes": [
+            "skateboard"
+        ],
+        "obj_3_attributes": [
+            "refrigerator"
+        ],
+        "obj_4_attributes": [
+            "boat"
+        ],
+        "obj_5_attributes": [
+            "vase"
+        ],
+        "text": "a photo of a wine glass, a skateboard, a refrigerator, a boat, and a vase."
+    },
+    {
+        "unique_id": 2,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "elephant"
+        ],
+        "obj_2_attributes": [
+            "giraffe"
+        ],
+        "obj_3_attributes": [
+            "mouse"
+        ],
+        "obj_4_attributes": [
+            "sports ball"
+        ],
+        "obj_5_attributes": [
+            "tennis racket"
+        ],
+        "text": "a photo of a elephant, a giraffe, a mouse, a sports ball, and a tennis racket."
+    },
+    {
+        "unique_id": 3,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "orange"
+        ],
+        "obj_2_attributes": [
+            "horse"
+        ],
+        "obj_3_attributes": [
+            "laptop"
+        ],
+        "obj_4_attributes": [
+            "motorcycle"
+        ],
+        "obj_5_attributes": [
+            "knife"
+        ],
+        "text": "a photo of a orange, a horse, a laptop, a motorcycle, and a knife."
+    },
+    {
+        "unique_id": 4,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "orange"
+        ],
+        "obj_2_attributes": [
+            "fire hydrant"
+        ],
+        "obj_3_attributes": [
+            "bowl"
+        ],
+        "obj_4_attributes": [
+            "kite"
+        ],
+        "obj_5_attributes": [
+            "dining table"
+        ],
+        "text": "a photo of a orange, a fire hydrant, a bowl, a kite, and a dining table."
+    },
+    {
+        "unique_id": 5,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "wine glass"
+        ],
+        "obj_2_attributes": [
+            "spoon"
+        ],
+        "obj_3_attributes": [
+            "fire hydrant"
+        ],
+        "obj_4_attributes": [
+            "sink"
+        ],
+        "obj_5_attributes": [
+            "chair"
+        ],
+        "text": "a photo of a wine glass, a spoon, a fire hydrant, a sink, and a chair."
+    },
+    {
+        "unique_id": 6,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "orange"
+        ],
+        "obj_2_attributes": [
+            "remote"
+        ],
+        "obj_3_attributes": [
+            "tie"
+        ],
+        "obj_4_attributes": [
+            "wine glass"
+        ],
+        "obj_5_attributes": [
+            "stop sign"
+        ],
+        "text": "a photo of a orange, a remote, a tie, a wine glass, and a stop sign."
+    },
+    {
+        "unique_id": 7,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "scissors"
+        ],
+        "obj_2_attributes": [
+            "orange"
+        ],
+        "obj_3_attributes": [
+            "spoon"
+        ],
+        "obj_4_attributes": [
+            "snowboard"
+        ],
+        "obj_5_attributes": [
+            "vase"
+        ],
+        "text": "a photo of a scissors, a orange, a spoon, a snowboard, and a vase."
+    },
+    {
+        "unique_id": 8,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "snowboard"
+        ],
+        "obj_2_attributes": [
+            "umbrella"
+        ],
+        "obj_3_attributes": [
+            "tv"
+        ],
+        "obj_4_attributes": [
+            "skateboard"
+        ],
+        "obj_5_attributes": [
+            "baseball glove"
+        ],
+        "text": "a photo of a snowboard, a umbrella, a tv, a skateboard, and a baseball glove."
+    },
+    {
+        "unique_id": 9,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "toaster"
+        ],
+        "obj_2_attributes": [
+            "broccoli"
+        ],
+        "obj_3_attributes": [
+            "teddy bear"
+        ],
+        "obj_4_attributes": [
+            "remote"
+        ],
+        "obj_5_attributes": [
+            "apple"
+        ],
+        "text": "a photo of a toaster, a broccoli, a teddy bear, a remote, and a apple."
+    },
+    {
+        "unique_id": 10,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "baseball bat"
+        ],
+        "obj_2_attributes": [
+            "teddy bear"
+        ],
+        "obj_3_attributes": [
+            "toilet"
+        ],
+        "obj_4_attributes": [
+            "banana"
+        ],
+        "obj_5_attributes": [
+            "sports ball"
+        ],
+        "text": "a photo of a baseball bat, a teddy bear, a toilet, a banana, and a sports ball."
+    },
+    {
+        "unique_id": 11,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "hair drier"
+        ],
+        "obj_2_attributes": [
+            "boat"
+        ],
+        "obj_3_attributes": [
+            "bird"
+        ],
+        "obj_4_attributes": [
+            "toothbrush"
+        ],
+        "obj_5_attributes": [
+            "traffic light"
+        ],
+        "text": "a photo of a hair drier, a boat, a bird, a toothbrush, and a traffic light."
+    },
+    {
+        "unique_id": 12,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "stop sign"
+        ],
+        "obj_2_attributes": [
+            "dog"
+        ],
+        "obj_3_attributes": [
+            "snowboard"
+        ],
+        "obj_4_attributes": [
+            "donut"
+        ],
+        "obj_5_attributes": [
+            "person"
+        ],
+        "text": "a photo of a stop sign, a dog, a snowboard, a donut, and a person."
+    },
+    {
+        "unique_id": 13,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "pizza"
+        ],
+        "obj_2_attributes": [
+            "airplane"
+        ],
+        "obj_3_attributes": [
+            "car"
+        ],
+        "obj_4_attributes": [
+            "cow"
+        ],
+        "obj_5_attributes": [
+            "mouse"
+        ],
+        "text": "a photo of a pizza, a airplane, a car, a cow, and a mouse."
+    },
+    {
+        "unique_id": 14,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "bottle"
+        ],
+        "obj_2_attributes": [
+            "clock"
+        ],
+        "obj_3_attributes": [
+            "broccoli"
+        ],
+        "obj_4_attributes": [
+            "traffic light"
+        ],
+        "obj_5_attributes": [
+            "fork"
+        ],
+        "text": "a photo of a bottle, a clock, a broccoli, a traffic light, and a fork."
+    },
+    {
+        "unique_id": 15,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "hot dog"
+        ],
+        "obj_2_attributes": [
+            "cup"
+        ],
+        "obj_3_attributes": [
+            "backpack"
+        ],
+        "obj_4_attributes": [
+            "sandwich"
+        ],
+        "obj_5_attributes": [
+            "fork"
+        ],
+        "text": "a photo of a hot dog, a cup, a backpack, a sandwich, and a fork."
+    },
+    {
+        "unique_id": 16,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "boat"
+        ],
+        "obj_2_attributes": [
+            "motorcycle"
+        ],
+        "obj_3_attributes": [
+            "traffic light"
+        ],
+        "obj_4_attributes": [
+            "bus"
+        ],
+        "obj_5_attributes": [
+            "surfboard"
+        ],
+        "text": "a photo of a boat, a motorcycle, a traffic light, a bus, and a surfboard."
+    },
+    {
+        "unique_id": 17,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "banana"
+        ],
+        "obj_2_attributes": [
+            "baseball bat"
+        ],
+        "obj_3_attributes": [
+            "tie"
+        ],
+        "obj_4_attributes": [
+            "boat"
+        ],
+        "obj_5_attributes": [
+            "couch"
+        ],
+        "text": "a photo of a banana, a baseball bat, a tie, a boat, and a couch."
+    },
+    {
+        "unique_id": 18,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "keyboard"
+        ],
+        "obj_2_attributes": [
+            "airplane"
+        ],
+        "obj_3_attributes": [
+            "banana"
+        ],
+        "obj_4_attributes": [
+            "train"
+        ],
+        "obj_5_attributes": [
+            "giraffe"
+        ],
+        "text": "a photo of a keyboard, a airplane, a banana, a train, and a giraffe."
+    },
+    {
+        "unique_id": 19,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "stop sign"
+        ],
+        "obj_2_attributes": [
+            "fire hydrant"
+        ],
+        "obj_3_attributes": [
+            "microwave"
+        ],
+        "obj_4_attributes": [
+            "tv"
+        ],
+        "obj_5_attributes": [
+            "airplane"
+        ],
+        "text": "a photo of a stop sign, a fire hydrant, a microwave, a tv, and a airplane."
+    },
+    {
+        "unique_id": 20,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "carrot"
+        ],
+        "obj_2_attributes": [
+            "bottle"
+        ],
+        "obj_3_attributes": [
+            "donut"
+        ],
+        "obj_4_attributes": [
+            "parking meter"
+        ],
+        "obj_5_attributes": [
+            "dog"
+        ],
+        "text": "a photo of a carrot, a bottle, a donut, a parking meter, and a dog."
+    },
+    {
+        "unique_id": 21,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "knife"
+        ],
+        "obj_2_attributes": [
+            "sheep"
+        ],
+        "obj_3_attributes": [
+            "backpack"
+        ],
+        "obj_4_attributes": [
+            "bird"
+        ],
+        "obj_5_attributes": [
+            "elephant"
+        ],
+        "text": "a photo of a knife, a sheep, a backpack, a bird, and a elephant."
+    },
+    {
+        "unique_id": 22,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "skateboard"
+        ],
+        "obj_2_attributes": [
+            "person"
+        ],
+        "obj_3_attributes": [
+            "surfboard"
+        ],
+        "obj_4_attributes": [
+            "hair drier"
+        ],
+        "obj_5_attributes": [
+            "dog"
+        ],
+        "text": "a photo of a skateboard, a person, a surfboard, a hair drier, and a dog."
+    },
+    {
+        "unique_id": 23,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "oven"
+        ],
+        "obj_2_attributes": [
+            "microwave"
+        ],
+        "obj_3_attributes": [
+            "potted plant"
+        ],
+        "obj_4_attributes": [
+            "skis"
+        ],
+        "obj_5_attributes": [
+            "horse"
+        ],
+        "text": "a photo of a oven, a microwave, a potted plant, a skis, and a horse."
+    },
+    {
+        "unique_id": 24,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "toaster"
+        ],
+        "obj_2_attributes": [
+            "frisbee"
+        ],
+        "obj_3_attributes": [
+            "bed"
+        ],
+        "obj_4_attributes": [
+            "tennis racket"
+        ],
+        "obj_5_attributes": [
+            "zebra"
+        ],
+        "text": "a photo of a toaster, a frisbee, a bed, a tennis racket, and a zebra."
+    },
+    {
+        "unique_id": 25,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "bear"
+        ],
+        "obj_2_attributes": [
+            "backpack"
+        ],
+        "obj_3_attributes": [
+            "sports ball"
+        ],
+        "obj_4_attributes": [
+            "surfboard"
+        ],
+        "obj_5_attributes": [
+            "skis"
+        ],
+        "text": "a photo of a bear, a backpack, a sports ball, a surfboard, and a skis."
+    },
+    {
+        "unique_id": 26,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "couch"
+        ],
+        "obj_2_attributes": [
+            "motorcycle"
+        ],
+        "obj_3_attributes": [
+            "laptop"
+        ],
+        "obj_4_attributes": [
+            "bowl"
+        ],
+        "obj_5_attributes": [
+            "refrigerator"
+        ],
+        "text": "a photo of a couch, a motorcycle, a laptop, a bowl, and a refrigerator."
+    },
+    {
+        "unique_id": 27,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "orange"
+        ],
+        "obj_2_attributes": [
+            "bicycle"
+        ],
+        "obj_3_attributes": [
+            "pizza"
+        ],
+        "obj_4_attributes": [
+            "tennis racket"
+        ],
+        "obj_5_attributes": [
+            "mouse"
+        ],
+        "text": "a photo of a orange, a bicycle, a pizza, a tennis racket, and a mouse."
+    },
+    {
+        "unique_id": 28,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "microwave"
+        ],
+        "obj_2_attributes": [
+            "bus"
+        ],
+        "obj_3_attributes": [
+            "stop sign"
+        ],
+        "obj_4_attributes": [
+            "mouse"
+        ],
+        "obj_5_attributes": [
+            "cat"
+        ],
+        "text": "a photo of a microwave, a bus, a stop sign, a mouse, and a cat."
+    },
+    {
+        "unique_id": 29,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "bicycle"
+        ],
+        "obj_2_attributes": [
+            "remote"
+        ],
+        "obj_3_attributes": [
+            "donut"
+        ],
+        "obj_4_attributes": [
+            "chair"
+        ],
+        "obj_5_attributes": [
+            "sheep"
+        ],
+        "text": "a photo of a bicycle, a remote, a donut, a chair, and a sheep."
+    },
+    {
+        "unique_id": 30,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "spoon"
+        ],
+        "obj_2_attributes": [
+            "laptop"
+        ],
+        "obj_3_attributes": [
+            "tennis racket"
+        ],
+        "obj_4_attributes": [
+            "sink"
+        ],
+        "obj_5_attributes": [
+            "toilet"
+        ],
+        "text": "a photo of a spoon, a laptop, a tennis racket, a sink, and a toilet."
+    },
+    {
+        "unique_id": 31,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "keyboard"
+        ],
+        "obj_2_attributes": [
+            "wine glass"
+        ],
+        "obj_3_attributes": [
+            "spoon"
+        ],
+        "obj_4_attributes": [
+            "skateboard"
+        ],
+        "obj_5_attributes": [
+            "backpack"
+        ],
+        "text": "a photo of a keyboard, a wine glass, a spoon, a skateboard, and a backpack."
+    },
+    {
+        "unique_id": 32,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "cake"
+        ],
+        "obj_2_attributes": [
+            "person"
+        ],
+        "obj_3_attributes": [
+            "bicycle"
+        ],
+        "obj_4_attributes": [
+            "truck"
+        ],
+        "obj_5_attributes": [
+            "oven"
+        ],
+        "text": "a photo of a cake, a person, a bicycle, a truck, and a oven."
+    },
+    {
+        "unique_id": 33,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "carrot"
+        ],
+        "obj_2_attributes": [
+            "mouse"
+        ],
+        "obj_3_attributes": [
+            "traffic light"
+        ],
+        "obj_4_attributes": [
+            "dining table"
+        ],
+        "obj_5_attributes": [
+            "skis"
+        ],
+        "text": "a photo of a carrot, a mouse, a traffic light, a dining table, and a skis."
+    },
+    {
+        "unique_id": 34,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "clock"
+        ],
+        "obj_2_attributes": [
+            "vase"
+        ],
+        "obj_3_attributes": [
+            "surfboard"
+        ],
+        "obj_4_attributes": [
+            "toilet"
+        ],
+        "obj_5_attributes": [
+            "cake"
+        ],
+        "text": "a photo of a clock, a vase, a surfboard, a toilet, and a cake."
+    },
+    {
+        "unique_id": 35,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "mouse"
+        ],
+        "obj_2_attributes": [
+            "carrot"
+        ],
+        "obj_3_attributes": [
+            "fire hydrant"
+        ],
+        "obj_4_attributes": [
+            "cow"
+        ],
+        "obj_5_attributes": [
+            "vase"
+        ],
+        "text": "a photo of a mouse, a carrot, a fire hydrant, a cow, and a vase."
+    },
+    {
+        "unique_id": 36,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "baseball glove"
+        ],
+        "obj_2_attributes": [
+            "baseball bat"
+        ],
+        "obj_3_attributes": [
+            "elephant"
+        ],
+        "obj_4_attributes": [
+            "surfboard"
+        ],
+        "obj_5_attributes": [
+            "fork"
+        ],
+        "text": "a photo of a baseball glove, a baseball bat, a elephant, a surfboard, and a fork."
+    },
+    {
+        "unique_id": 37,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "handbag"
+        ],
+        "obj_2_attributes": [
+            "toilet"
+        ],
+        "obj_3_attributes": [
+            "knife"
+        ],
+        "obj_4_attributes": [
+            "vase"
+        ],
+        "obj_5_attributes": [
+            "bicycle"
+        ],
+        "text": "a photo of a handbag, a toilet, a knife, a vase, and a bicycle."
+    },
+    {
+        "unique_id": 38,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "train"
+        ],
+        "obj_2_attributes": [
+            "bottle"
+        ],
+        "obj_3_attributes": [
+            "sink"
+        ],
+        "obj_4_attributes": [
+            "cat"
+        ],
+        "obj_5_attributes": [
+            "parking meter"
+        ],
+        "text": "a photo of a train, a bottle, a sink, a cat, and a parking meter."
+    },
+    {
+        "unique_id": 39,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "toaster"
+        ],
+        "obj_2_attributes": [
+            "cup"
+        ],
+        "obj_3_attributes": [
+            "frisbee"
+        ],
+        "obj_4_attributes": [
+            "laptop"
+        ],
+        "obj_5_attributes": [
+            "potted plant"
+        ],
+        "text": "a photo of a toaster, a cup, a frisbee, a laptop, and a potted plant."
+    },
+    {
+        "unique_id": 40,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "knife"
+        ],
+        "obj_2_attributes": [
+            "pizza"
+        ],
+        "obj_3_attributes": [
+            "fork"
+        ],
+        "obj_4_attributes": [
+            "bicycle"
+        ],
+        "obj_5_attributes": [
+            "cup"
+        ],
+        "text": "a photo of a knife, a pizza, a fork, a bicycle, and a cup."
+    },
+    {
+        "unique_id": 41,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "frisbee"
+        ],
+        "obj_2_attributes": [
+            "tie"
+        ],
+        "obj_3_attributes": [
+            "book"
+        ],
+        "obj_4_attributes": [
+            "dining table"
+        ],
+        "obj_5_attributes": [
+            "traffic light"
+        ],
+        "text": "a photo of a frisbee, a tie, a book, a dining table, and a traffic light."
+    },
+    {
+        "unique_id": 42,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "backpack"
+        ],
+        "obj_2_attributes": [
+            "sports ball"
+        ],
+        "obj_3_attributes": [
+            "bear"
+        ],
+        "obj_4_attributes": [
+            "banana"
+        ],
+        "obj_5_attributes": [
+            "fork"
+        ],
+        "text": "a photo of a backpack, a sports ball, a bear, a banana, and a fork."
+    },
+    {
+        "unique_id": 43,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "tv"
+        ],
+        "obj_2_attributes": [
+            "clock"
+        ],
+        "obj_3_attributes": [
+            "bottle"
+        ],
+        "obj_4_attributes": [
+            "knife"
+        ],
+        "obj_5_attributes": [
+            "banana"
+        ],
+        "text": "a photo of a tv, a clock, a bottle, a knife, and a banana."
+    },
+    {
+        "unique_id": 44,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "handbag"
+        ],
+        "obj_2_attributes": [
+            "sports ball"
+        ],
+        "obj_3_attributes": [
+            "spoon"
+        ],
+        "obj_4_attributes": [
+            "cell phone"
+        ],
+        "obj_5_attributes": [
+            "bear"
+        ],
+        "text": "a photo of a handbag, a sports ball, a spoon, a cell phone, and a bear."
+    },
+    {
+        "unique_id": 45,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "sports ball"
+        ],
+        "obj_2_attributes": [
+            "bus"
+        ],
+        "obj_3_attributes": [
+            "hair drier"
+        ],
+        "obj_4_attributes": [
+            "bed"
+        ],
+        "obj_5_attributes": [
+            "surfboard"
+        ],
+        "text": "a photo of a sports ball, a bus, a hair drier, a bed, and a surfboard."
+    },
+    {
+        "unique_id": 46,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "mouse"
+        ],
+        "obj_2_attributes": [
+            "tie"
+        ],
+        "obj_3_attributes": [
+            "bear"
+        ],
+        "obj_4_attributes": [
+            "banana"
+        ],
+        "obj_5_attributes": [
+            "skateboard"
+        ],
+        "text": "a photo of a mouse, a tie, a bear, a banana, and a skateboard."
+    },
+    {
+        "unique_id": 47,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "fork"
+        ],
+        "obj_2_attributes": [
+            "knife"
+        ],
+        "obj_3_attributes": [
+            "pizza"
+        ],
+        "obj_4_attributes": [
+            "baseball bat"
+        ],
+        "obj_5_attributes": [
+            "toilet"
+        ],
+        "text": "a photo of a fork, a knife, a pizza, a baseball bat, and a toilet."
+    },
+    {
+        "unique_id": 48,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "bear"
+        ],
+        "obj_2_attributes": [
+            "teddy bear"
+        ],
+        "obj_3_attributes": [
+            "elephant"
+        ],
+        "obj_4_attributes": [
+            "cell phone"
+        ],
+        "obj_5_attributes": [
+            "baseball glove"
+        ],
+        "text": "a photo of a bear, a teddy bear, a elephant, a cell phone, and a baseball glove."
+    },
+    {
+        "unique_id": 49,
+        "num_objects": 5,
+        "obj_1_attributes": [
+            "skis"
+        ],
+        "obj_2_attributes": [
+            "donut"
+        ],
+        "obj_3_attributes": [
+            "sheep"
+        ],
+        "obj_4_attributes": [
+            "orange"
+        ],
+        "obj_5_attributes": [
+            "fork"
+        ],
+        "text": "a photo of a skis, a donut, a sheep, a orange, and a fork."
+    }
+]
