@@ -296,4 +296,4 @@ if __name__ == "__main__":
     # Fine-tuning
     fine_tuner = CLIPFineTuner()
     print("finetuning")
-    fine_tuner.train(dataloader, num_epochs=1, max_batch=100)
+    fine_tuner.train(dataloader, num_epochs=1, max_batch=6000)
