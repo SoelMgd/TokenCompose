@@ -16,7 +16,7 @@ args = parser.parse_args()
 
 model_name = args.model_name
 pipe = StableDiffusionPipeline.from_pretrained(model_name, torch_dtype=torch.float32)
-print("CLIP text projection dimension:", pipe.text_encoder.config.hidden_size)
+print("original CLIP text projection dimension:", pipe.text_encoder.config.hidden_size)
 
 
 ################################ Remplacement ##########################
@@ -25,6 +25,8 @@ from transformers import CLIPTextModel, CLIPTokenizer
 fine_tuned_clip_model_dir = "../train/clip_finetuned_model"  # Chemin où vos poids sont sauvegardés
 new_text_encoder = CLIPTextModel.from_pretrained(fine_tuned_clip_model_dir)
 new_tokenizer = CLIPTokenizer.from_pretrained(fine_tuned_clip_model_dir)
+
+print("fine tuned CLIP text projection dimension:", new_text_encoder.config.hidden_size)
 
 # Remplacer les composants CLIP dans la pipeline
 pipe.text_encoder = new_text_encoder
