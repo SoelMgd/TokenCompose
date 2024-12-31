@@ -77,7 +77,7 @@ class CocoGsamDataset(Dataset):
                 roi = image.crop((x_min, y_min, x_max, y_max))
 
                 # Resize the ROI to the target size
-                roi = roi.resize(self.target_size, Image.ANTIALIAS)
+                roi = roi.resize(self.target_size, Image.ANTIALIAS, do_rescale=False)
 
                 # Extract name from the mask file
                 obj_name = os.path.basename(mask_path).split('_')[-1].split('.')[0]
