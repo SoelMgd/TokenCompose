@@ -105,7 +105,26 @@ class CocoGsamDataset(Dataset):
 
 # Fine-tuning CLIP
 class CLIPFineTuner:
-    def __init__(self, model_name="openai/clip-vit-large-patch14", lr=5e-5, tau=0.07, device="cuda" if torch.cuda.is_available() else "cpu"):
+    def __init__(self, model_name="openai/clip-vit-large-patch14", lr=5e-5, tau=0.07, train_text_projection=True, device="cuda" if torch.cuda.is_available() else "cpu"):
+        self.device = device
+        self.tau = tau
+
+        # Charger le modèle et le processeur
+        self.model = CLIPModel.from_pretrained(model_name).to(self.device)
+        self.processor = CLIPProcessor.from_pretrained(model_name)
+
+        # Geler les poids (si nécessaire)
+        for param in self.model.parameters():
+            param.requires_grad = False  # Geler tous les poids
+
+        if train_text_projection:
+            for param in self.model.text_projection.parameters():
+                param.requires_grad = True  # Débloquer uniquement la projection texte
+
+        # Définir l'optimiseur (ne verra que les poids non gelés)
+        self.optimizer = optim.AdamW(filter(lambda p: p.requires_grad, self.model.parameters()), lr=lr)
+        '''
+        
         self.device = device
         self.tau = tau
 
@@ -114,7 +133,7 @@ class CLIPFineTuner:
         self.processor = CLIPProcessor.from_pretrained(model_name)
 
         # Define optimizer
-        self.optimizer = optim.AdamW(self.model.parameters(), lr=lr)
+        self.optimizer = optim.AdamW(self.model.parameters(), lr=lr)'''
 
     def info_nce_loss(self, image_embeddings, text_embeddings):
         """Compute the InfoNCE loss for a batch."""
