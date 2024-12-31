@@ -17,15 +17,6 @@ args = parser.parse_args()
 model_name = args.model_name
 pipe = StableDiffusionPipeline.from_pretrained(model_name, torch_dtype=torch.float32)
 
-distributed_state = PartialState()
-
-# Vérifier l'état du GPU
-print(f"Accelerate device: {distributed_state.device}")
-print(f"CUDA available: {torch.cuda.is_available()}")
-if torch.cuda.is_available():
-    print(f"CUDA device name: {torch.cuda.get_device_name(0)}")
-
-
 ################################ Remplacement ##########################
 from transformers import CLIPTextModel, CLIPTokenizer
 
@@ -36,6 +27,15 @@ new_tokenizer = CLIPTokenizer.from_pretrained(fine_tuned_clip_model_dir)
 # Remplacer les composants CLIP dans la pipeline
 pipe.text_encoder = new_text_encoder
 pipe.tokenizer = new_tokenizer
+########################################################################
+
+distributed_state = PartialState()
+
+# Vérifier l'état du GPU
+print(f"Accelerate device: {distributed_state.device}")
+print(f"CUDA available: {torch.cuda.is_available()}")
+if torch.cuda.is_available():
+    print(f"CUDA device name: {torch.cuda.get_device_name(0)}")
 
 
 pipe.to(distributed_state.device)
