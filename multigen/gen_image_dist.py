@@ -16,6 +16,8 @@ args = parser.parse_args()
 
 model_name = args.model_name
 pipe = StableDiffusionPipeline.from_pretrained(model_name, torch_dtype=torch.float32)
+print("CLIP text projection dimension:", pipe.text_encoder.config.hidden_size)
+
 
 ################################ Remplacement ##########################
 from transformers import CLIPTextModel, CLIPTokenizer
