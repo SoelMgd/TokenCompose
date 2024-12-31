@@ -25,7 +25,19 @@ print(f"CUDA available: {torch.cuda.is_available()}")
 if torch.cuda.is_available():
     print(f"CUDA device name: {torch.cuda.get_device_name(0)}")
 
-    
+
+################################ Remplacement ##########################
+from transformers import CLIPTextModel, CLIPTokenizer
+
+fine_tuned_clip_model_dir = "../train/clip_finetuned_model"  # Chemin où vos poids sont sauvegardés
+new_text_encoder = CLIPTextModel.from_pretrained(fine_tuned_clip_model_dir)
+new_tokenizer = CLIPTokenizer.from_pretrained(fine_tuned_clip_model_dir)
+
+# Remplacer les composants CLIP dans la pipeline
+pipe.text_encoder = new_text_encoder
+pipe.tokenizer = new_tokenizer
+
+
 pipe.to(distributed_state.device)
 pipe.set_progress_bar_config(disable=True)
 print("Model loaded.")
