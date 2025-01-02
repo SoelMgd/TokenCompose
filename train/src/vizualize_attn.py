@@ -61,7 +61,7 @@ print("AttentionStore enregistré avec succès.")
 tokenizer = pipe.tokenizer
 print("Tokenizer chargé :", type(tokenizer))
 
-prompt = "A cat and a wine glass"
+prompt = "A lion next to a traffic light" #"A cat and a wine glass"
 tokenized_prompt = tokenizer(prompt, return_tensors="pt", truncation=True, padding="max_length").input_ids[0]
 decoded_tokens = [tokenizer.decode([idx]) for idx in tokenized_prompt]
 
@@ -69,11 +69,11 @@ print("Tokenized Prompt :", tokenized_prompt.tolist())
 print("Decoded Tokens :", decoded_tokens)
 
 # Identifier les indices pour 'cat' et 'wine glass'
-token_indices_cat = [i for i, token in enumerate(decoded_tokens) if "cat" in token]
-token_indices_glass = [i for i, token in enumerate(decoded_tokens) if "glass" in token or "wine" in token]
+token_indices_cat = [i for i, token in enumerate(decoded_tokens) if "lion" in token]
+token_indices_glass = [i for i, token in enumerate(decoded_tokens) if "traffic" in token or "light" in token]
 
-print(f"Indices pour 'cat': {token_indices_cat}")
-print(f"Indices pour 'wine glass': {token_indices_glass}")
+print(f"Indices pour 'lion': {token_indices_cat}")
+print(f"Indices pour 'traffic light': {token_indices_glass}")
 
 # Générer une image
 image = pipe(prompt).images[0]
