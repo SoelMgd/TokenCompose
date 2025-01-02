@@ -61,7 +61,7 @@ print("AttentionStore enregistré avec succès.")
 tokenizer = pipe.tokenizer
 print("Tokenizer chargé :", type(tokenizer))
 
-prompt = "A lion next to a traffic light" #"A cat and a wine glass"
+prompt = "An elephant standing next to a helicopter" #"A cat and a wine glass"
 tokenized_prompt = tokenizer(prompt, return_tensors="pt", truncation=True, padding="max_length").input_ids[0]
 decoded_tokens = [tokenizer.decode([idx]) for idx in tokenized_prompt]
 
@@ -69,11 +69,11 @@ print("Tokenized Prompt :", tokenized_prompt.tolist())
 print("Decoded Tokens :", decoded_tokens)
 
 # Identifier les indices pour 'cat' et 'wine glass'
-token_indices_cat = [i for i, token in enumerate(decoded_tokens) if "lion" in token]
-token_indices_glass = [i for i, token in enumerate(decoded_tokens) if "traffic" in token or "light" in token]
+token_indices_cat = [i for i, token in enumerate(decoded_tokens) if "elephant" in token]
+token_indices_glass = [i for i, token in enumerate(decoded_tokens) if "helicopter"]# in token or "light" in token]
 
-print(f"Indices pour 'lion': {token_indices_cat}")
-print(f"Indices pour 'traffic light': {token_indices_glass}")
+print(f"Indices pour 'elephant': {token_indices_cat}")
+print(f"Indices pour 'helicopter': {token_indices_glass}")
 
 # Générer une image
 image = pipe(prompt).images[0]
@@ -112,7 +112,7 @@ def combine_attention_maps(attention_map_avg, token_indices):
     return combined_map
 
 # Générer et sauvegarder les heatmaps pour 'cat' et 'wine glass'
-for token_name, token_indices in [("lion", token_indices_cat), ("traffic_light", token_indices_glass)]:
+for token_name, token_indices in [("elephant", token_indices_cat), ("helicopter", token_indices_glass)]:
     try:
         print(f"Traitement des cartes d'attention pour '{token_name}'...")
         
