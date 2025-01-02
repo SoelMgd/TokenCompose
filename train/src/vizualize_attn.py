@@ -43,7 +43,7 @@ def reduce_attention_map(attention_map, target_resolution=512):
 
 
 # Charger le modèle depuis HuggingFace
-model_id = "mlpc-lab/TokenCompose_SD14_B"
+model_id = "CompVis/stable-diffusion-v1-4" #"mlpc-lab/TokenCompose_SD14_B"
 device = "cuda"
 
 pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
