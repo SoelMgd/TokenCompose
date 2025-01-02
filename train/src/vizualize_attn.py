@@ -112,7 +112,7 @@ def combine_attention_maps(attention_map_avg, token_indices):
     return combined_map
 
 # Générer et sauvegarder les heatmaps pour 'cat' et 'wine glass'
-for token_name, token_indices in [("cat", token_indices_cat), ("wine glass", token_indices_glass)]:
+for token_name, token_indices in [("cat", token_indices_cat), ("wine_glass", token_indices_glass)]:
     try:
         print(f"Traitement des cartes d'attention pour '{token_name}'...")
         
