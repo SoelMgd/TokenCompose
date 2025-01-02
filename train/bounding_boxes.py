@@ -58,7 +58,7 @@ def visualize_bounding_boxes(img_path, mask_dir):
     
     # Display the image with bounding boxes
     plt.axis('off')
-    plt.savefig('boxes.png')
+    plt.savefig('boxes_test.png')
 
 
 # Example Usage
