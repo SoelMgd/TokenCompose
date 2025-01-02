@@ -65,7 +65,7 @@ def visualize_bounding_boxes(img_path, mask_dir):
 if __name__ == "__main__":
     print("debut")
     # Path to the image
-    img_path = "data/coco_gsam_img/train/000000116675.jpg"
+    img_path = "data/coco_gsam_img/train/000000225322.jpg"
     
     # Path to the corresponding mask directory
     mask_dir = "data/coco_gsam_seg"
